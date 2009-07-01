@@ -1,0 +1,10 @@
+C:\rtg\rtg.Tests\obj\Debug\ResolveAssemblyReference.cache
+C:\rtg\rtg.Tests\bin\Debug\rtg.Tests.dll.config
+C:\rtg\rtg.Tests\bin\Debug\rtg.Tests.dll
+C:\rtg\rtg.Tests\bin\Debug\rtg.Tests.pdb
+C:\rtg\rtg.Tests\bin\Debug\rtg.dll
+C:\rtg\rtg.Tests\bin\Debug\Newtonsoft.Json.dll
+C:\rtg\rtg.Tests\bin\Debug\rtg.pdb
+C:\rtg\rtg.Tests\bin\Debug\Newtonsoft.Json.xml
+C:\rtg\rtg.Tests\obj\Debug\rtg.Tests.dll
+C:\rtg\rtg.Tests\obj\Debug\rtg.Tests.pdb
