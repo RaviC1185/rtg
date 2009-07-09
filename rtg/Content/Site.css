@@ -1,4 +1,16 @@
-﻿/*-
+﻿img{border:0;}
+
+/******************************************************************************************************************************************
+*************** Settings
+******************************************************************************************************************************************/
+
+div.StyleSelector{float:left;}
+  div.StyleSelector a{padding: 5px; display:block;}
+  div.StyleSelector a:hover{background-color:Yellow;}
+  div.StyleSelected{background-color:black;}
+  
+
+/*-
 Gallery
 
 */

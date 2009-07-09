@@ -1,13 +1,10 @@
 ﻿var nodeCreate = 0; 
 
-function filePreview(file)
-{
-  $.post("/Page/GetFilePreview", {file: file}, function(data){
-    $("#ImageGallery").html(data);
-  });
-}
-
 $(document).ready(function(){
+/************************************************************************************************************************************************************
+************ Pages
+************************************************************************************************************************************************************/
+
   $('#tabs').tabs({  
      tabTemplate: '<li><a href="#{href}"><span>#{label}</span></a> <a href="#{href}" class="CloseTab ui-icon ui-icon-circle-close" style="padding:0;cursor:pointer;">Close</a></li>'
   });
@@ -70,11 +67,40 @@ $(document).ready(function(){
     },
     lang : {new_node: "New Page"}
   });
-  $.tree_reference('jstree_1').open_all();
+  
+  if($('.jstree').lenght > 0){ //stop from running when jstree is not on the page.
+    $.tree_reference('jstree_1').open_all();
+  }
+  
+/************************************************************************************************************************************************************
+************ Settings
+************************************************************************************************************************************************************/  
+  $("#SettingsAccordion").accordion({
+		autoHeight: false,
+		collapsible: true
+	});
+	
+	$("#SettingsAccordion").accordion('activate', false);
+	
+  $('.StyleSelector').click(function(){
+    $('.StyleSelected').toggleClass('StyleSelected');
+    $(this).toggleClass('StyleSelected');
+    var styleid = $(this).attr('id');
+    $.post('/Settings/SelectStyle/'+styleid, function(data){
+      $('#AdvancedTab').html(data);
+      init();
+    });
+    return false;
+  });
+
 });
 
 function init()
 {
+/************************************************************************************************************************************************************
+************ Pages
+************************************************************************************************************************************************************/
+
   $('.CloseTab').unbind('click');
   $('.CloseTab').click(function(){
     var tabid = $(this).attr('href');
@@ -96,7 +122,7 @@ function init()
   $(".directory").unbind('click');
   $('.directory').click(function(){
     var folder= $(this).children("a").attr("rel");
-    alert("folder["+folder+"]");
+    //alert("folder["+folder+"]");
   });
 
   $(".SettingsEdit").unbind('keydown');
@@ -131,11 +157,11 @@ function init()
   
   $(".PageContentSave").unbind('click');
   $(".PageContentSave").click(function(){
-    alert("Save");
+    //alert("Save");
     var id = $(this).attr("name");
     var editor = xinha_editors[id];
     var content = editor.getEditorContent();
-    alert(content);
+    //alert(content);
     var action = $(this).parents("form").attr("action");
     $.post(action, {HtmlContent: content});
     return false;
@@ -355,6 +381,71 @@ function init()
     connectWith: ".SortableGallery",
     update: function(ev, ui){ SaveCategoryCollection($(this)); }});
   $(".GalleryTitle span").disableSelection();
+/************************************************************************************************************************************************************
+************ Settings
+************************************************************************************************************************************************************/  
+  $('.InputColour').ColorPicker({
+	  onSubmit: function(hsb, hex, rgb, el) {
+		  $(el).val(hex);
+		  $(el).ColorPickerHide();
+		  AutoSave($(el));
+	  },
+	  onHide: function(hsb, hex, rgb, el) {
+		  $(el).val(hex);
+		  $(el).ColorPickerHide();
+		  AutoSave($(el));
+	  },
+	  onBeforeShow: function () {
+		  $(this).ColorPickerSetColor(this.value);
+	  }
+  })
+  .bind('keyup', function(){
+	  $(this).ColorPickerSetColor(this.value);
+  });
+  
+  $(".InputImage").droppable({
+	  accept: 'li.file',
+	  drop: function(ev, ui) {
+	   var src = ui.draggable.find('a').attr('rel');
+	   if(src.lastIndexOf('.jpg') > 0 || src.lastIndexOf('.png') > 0 || src.lastIndexOf('.gif')> 0){
+	    var arr = src.split('/upload/');
+		  $(this).attr('value', '/upload/'+arr[1]);
+		  AutoSave($(this));
+		 }
+		}
+  });
+  
+  $(".InputStylesheet").droppable({
+	  accept: 'li.file',
+	  drop: function(ev, ui) {
+	   var src = ui.draggable.find('a').attr('rel');
+	   if(src.lastIndexOf('.css') > 0){
+	    var arr = src.split('/upload/');
+		  $(this).attr('value', '/upload/'+arr[1]);
+		  AutoSave($(this));
+		 }
+		}
+  });
+  
+  $(".AutoSave").unbind('change');
+  $(".AutoSave").change(function(){
+    AutoSave($(this))
+  });
+  
+  $(".RadioAutoSave").unbind('click');
+  $(".RadioAutoSave").click(function(){
+   AutoSave($(this))
+  });
+}
+/************************************************************************************************************************************************************
+************ Pages
+************************************************************************************************************************************************************/
+
+function filePreview(file)
+{
+  $.post("/Page/GetFilePreview", {file: file}, function(data){
+    $("#ImageGallery").html(data);
+  });
 }
 
 function SaveGalleryCollection(gallery)
@@ -492,4 +583,16 @@ function tabContent(pageId, tabId)
       });
       xinha_init(ids);
   });
+}
+
+/************************************************************************************************************************************************************
+************ Settings
+************************************************************************************************************************************************************/
+
+function AutoSave(item)
+{
+    var form = item.parents('form');
+    var action = form.attr('action');
+    var formstr = form.serialize();
+    $.post(action, formstr);
 }
