@@ -1,5 +1,5 @@
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
-<div id="Gallery0" class="Gallery">
+<div id="Gallery0" class="Gallery DroppableGallery">
 <form>
 <%= Html.Hidden("GalleryID", 0) %>
 <div class="GalleryTitle"><span></span><%= Html.TextBox("Title", "Title") %></div>

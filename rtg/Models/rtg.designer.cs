@@ -48,6 +48,9 @@ namespace rtg.Models
     partial void InsertSetting(Setting instance);
     partial void UpdateSetting(Setting instance);
     partial void DeleteSetting(Setting instance);
+    partial void InsertPageTemplate(PageTemplate instance);
+    partial void UpdatePageTemplate(PageTemplate instance);
+    partial void DeletePageTemplate(PageTemplate instance);
     #endregion
 		
 		public rtgDataContext() : 
@@ -127,6 +130,14 @@ namespace rtg.Models
 				return this.GetTable<Setting>();
 			}
 		}
+		
+		public System.Data.Linq.Table<PageTemplate> PageTemplates
+		{
+			get
+			{
+				return this.GetTable<PageTemplate>();
+			}
+		}
 	}
 	
 	[Table(Name="dbo.Pages")]
@@ -175,6 +186,8 @@ namespace rtg.Models
 		
 		private EntityRef<Page> _Page1;
 		
+		private EntityRef<PageTemplate> _PageTemplate;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -219,6 +232,7 @@ namespace rtg.Models
 			this._PageObjects = new EntitySet<PageObject>(new Action<PageObject>(this.attach_PageObjects), new Action<PageObject>(this.detach_PageObjects));
 			this._Galleries = new EntitySet<Gallery>(new Action<Gallery>(this.attach_Galleries), new Action<Gallery>(this.detach_Galleries));
 			this._Page1 = default(EntityRef<Page>);
+			this._PageTemplate = default(EntityRef<PageTemplate>);
 			OnCreated();
 		}
 		
@@ -397,6 +411,10 @@ namespace rtg.Models
 			{
 				if ((this._TemplateID != value))
 				{
+					if (this._PageTemplate.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnTemplateIDChanging(value);
 					this.SendPropertyChanging();
 					this._TemplateID = value;
@@ -615,6 +633,40 @@ namespace rtg.Models
 						this._ParentID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Parent");
+				}
+			}
+		}
+		
+		[Association(Name="PageTemplate_Page", Storage="_PageTemplate", ThisKey="TemplateID", IsForeignKey=true)]
+		public PageTemplate PageTemplate
+		{
+			get
+			{
+				return this._PageTemplate.Entity;
+			}
+			set
+			{
+				PageTemplate previousValue = this._PageTemplate.Entity;
+				if (((previousValue != value) 
+							|| (this._PageTemplate.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PageTemplate.Entity = null;
+						previousValue.Pages.Remove(this);
+					}
+					this._PageTemplate.Entity = value;
+					if ((value != null))
+					{
+						value.Pages.Add(this);
+						this._TemplateID = value.TemplateID;
+					}
+					else
+					{
+						this._TemplateID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("PageTemplate");
 				}
 			}
 		}
@@ -1731,6 +1783,288 @@ namespace rtg.Models
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[Table(Name="dbo.PageTemplates")]
+	public partial class PageTemplate : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TemplateID;
+		
+		private string _SourceID;
+		
+		private string _Title;
+		
+		private string _Description;
+		
+		private string _PageFile;
+		
+		private string _Icon;
+		
+		private System.Nullable<bool> _IsContentEditor;
+		
+		private string _HtmlContent;
+		
+		private System.Nullable<bool> _Enabled;
+		
+		private EntitySet<Page> _Pages;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTemplateIDChanging(int value);
+    partial void OnTemplateIDChanged();
+    partial void OnSourceIDChanging(string value);
+    partial void OnSourceIDChanged();
+    partial void OnTitleChanging(string value);
+    partial void OnTitleChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnPageFileChanging(string value);
+    partial void OnPageFileChanged();
+    partial void OnIconChanging(string value);
+    partial void OnIconChanged();
+    partial void OnIsContentEditorChanging(System.Nullable<bool> value);
+    partial void OnIsContentEditorChanged();
+    partial void OnHtmlContentChanging(string value);
+    partial void OnHtmlContentChanged();
+    partial void OnEnabledChanging(System.Nullable<bool> value);
+    partial void OnEnabledChanged();
+    #endregion
+		
+		public PageTemplate()
+		{
+			this._Pages = new EntitySet<Page>(new Action<Page>(this.attach_Pages), new Action<Page>(this.detach_Pages));
+			OnCreated();
+		}
+		
+		[Column(Storage="_TemplateID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TemplateID
+		{
+			get
+			{
+				return this._TemplateID;
+			}
+			set
+			{
+				if ((this._TemplateID != value))
+				{
+					this.OnTemplateIDChanging(value);
+					this.SendPropertyChanging();
+					this._TemplateID = value;
+					this.SendPropertyChanged("TemplateID");
+					this.OnTemplateIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SourceID", DbType="NVarChar(50)")]
+		public string SourceID
+		{
+			get
+			{
+				return this._SourceID;
+			}
+			set
+			{
+				if ((this._SourceID != value))
+				{
+					this.OnSourceIDChanging(value);
+					this.SendPropertyChanging();
+					this._SourceID = value;
+					this.SendPropertyChanged("SourceID");
+					this.OnSourceIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Title", DbType="NVarChar(500)")]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Description", DbType="NVarChar(2000)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_PageFile", DbType="NVarChar(100)")]
+		public string PageFile
+		{
+			get
+			{
+				return this._PageFile;
+			}
+			set
+			{
+				if ((this._PageFile != value))
+				{
+					this.OnPageFileChanging(value);
+					this.SendPropertyChanging();
+					this._PageFile = value;
+					this.SendPropertyChanged("PageFile");
+					this.OnPageFileChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Icon", DbType="NVarChar(500)")]
+		public string Icon
+		{
+			get
+			{
+				return this._Icon;
+			}
+			set
+			{
+				if ((this._Icon != value))
+				{
+					this.OnIconChanging(value);
+					this.SendPropertyChanging();
+					this._Icon = value;
+					this.SendPropertyChanged("Icon");
+					this.OnIconChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_IsContentEditor", DbType="Bit")]
+		public System.Nullable<bool> IsContentEditor
+		{
+			get
+			{
+				return this._IsContentEditor;
+			}
+			set
+			{
+				if ((this._IsContentEditor != value))
+				{
+					this.OnIsContentEditorChanging(value);
+					this.SendPropertyChanging();
+					this._IsContentEditor = value;
+					this.SendPropertyChanged("IsContentEditor");
+					this.OnIsContentEditorChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_HtmlContent", DbType="NText", UpdateCheck=UpdateCheck.Never)]
+		public string HtmlContent
+		{
+			get
+			{
+				return this._HtmlContent;
+			}
+			set
+			{
+				if ((this._HtmlContent != value))
+				{
+					this.OnHtmlContentChanging(value);
+					this.SendPropertyChanging();
+					this._HtmlContent = value;
+					this.SendPropertyChanged("HtmlContent");
+					this.OnHtmlContentChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Enabled", DbType="Bit")]
+		public System.Nullable<bool> Enabled
+		{
+			get
+			{
+				return this._Enabled;
+			}
+			set
+			{
+				if ((this._Enabled != value))
+				{
+					this.OnEnabledChanging(value);
+					this.SendPropertyChanging();
+					this._Enabled = value;
+					this.SendPropertyChanged("Enabled");
+					this.OnEnabledChanged();
+				}
+			}
+		}
+		
+		[Association(Name="PageTemplate_Page", Storage="_Pages", OtherKey="TemplateID")]
+		public EntitySet<Page> Pages
+		{
+			get
+			{
+				return this._Pages;
+			}
+			set
+			{
+				this._Pages.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Pages(Page entity)
+		{
+			this.SendPropertyChanging();
+			entity.PageTemplate = this;
+		}
+		
+		private void detach_Pages(Page entity)
+		{
+			this.SendPropertyChanging();
+			entity.PageTemplate = null;
 		}
 	}
 }

@@ -10,31 +10,12 @@ $(document).ready(function(){
   });
   
   $('#FolderBrowser').fileTree({
-      root: '/WhiteTree/WhiteTree/upload/',
-      script: '/jqueryFileTree/connectors/jqueryFileTree.aspx'
+      root: '/rtg/rtg/upload/',
+      script: '/Plugins/jqueryFileTree/connectors/jqueryFileTree.aspx'
     }, function(file) { 
         filePreview(file);
   });
-  
-  $(".AddPage").click(function(){
-    nodeCreate = 1;
-    if($.tree_reference('jstree_1').selected)
-        $.tree_focused().create({ attributes: { id : "newnode", rel:"invisible"}});
-    else
-      $.tree_reference("jstree_1").create({ attributes: { id : "newnode", rel:"invisible"}}, -1);
-    return false;
-    //$.post("/Page/AddPage");
-  });
-  
-  $(".DeletePage").click(function(){
-    if($.tree_reference('jstree_1').selected.attr("rel") != "locked")
-    {
-      var id = $.tree_reference('jstree_1').selected.attr("id");
-      $.tree_focused().remove();
-      $.post("/Page/Delete/"+id);
-    }
-  });
-  
+   
   $(".jstree").tree({
        ui      : {
       theme_name  : "mezza",
@@ -66,6 +47,25 @@ $(document).ready(function(){
       ondrop      : function(NODE,REF_NODE,TYPE,TREE_OBJ) {}
     },
     lang : {new_node: "New Page"}
+  });
+  
+  $(".AddPage").click(function(){
+    nodeCreate = 1;
+    if($.tree_reference('jstree_1').selected)
+        $.tree_focused().create({ attributes: { id : "newnode", rel:"invisible"}});
+    else
+      $.tree_reference("jstree_1").create({ attributes: { id : "newnode", rel:"invisible"}}, -1);
+    return false;
+    //$.post("/Page/AddPage");
+  });
+  
+  $(".DeletePage").click(function(){
+    if($.tree_reference('jstree_1').selected.attr("rel") != "locked")
+    {
+      var id = $.tree_reference('jstree_1').selected.attr("id");
+      $.tree_focused().remove();
+      $.post("/Page/Delete/"+id);
+    }
   });
   
   if($('.jstree').lenght > 0){ //stop from running when jstree is not on the page.
@@ -226,6 +226,7 @@ function init()
     $.post("/page/SaveGallery", form, function(data){
       gallery.find("input[name=GalleryID]").attr("value", data);
       gallery.attr("id", "Gallery"+data);
+      init();
     });
     var title = gallery.find("div.GalleryTitle").find("span");
     title.html(title.next().attr("value"));
@@ -359,6 +360,7 @@ function init()
 			dropImage(pageId, ui.draggable);
 		}
   });
+  
   $(".DroppableGallery").droppable({
 	  drop: function(ev, ui) {
 		  var galleryId = $(this).find("input[name=GalleryID]").attr("value");
@@ -483,6 +485,7 @@ function dropGalleryImage(galleryID, $item)
   var src = $item.children("a").attr("rel");
   //alert("src="+src);
   $.post("/Page/AddImageToGallery", {galleryID: galleryID, imageSrc: src}, function(data){
+    $("#Gallery"+galleryID).find(".dropzone").remove();
     $("#Gallery"+galleryID).find(".thumbs").children("div").before(data);
     init();
   });
@@ -493,6 +496,7 @@ function dropGalleryFolder(galleryID, $item)
   //alert("DropFolder");
   var folder = $item.children("a").attr("rel");
   $.post("/Page/AddFolderToGallery", {galleryID: galleryID, folder: folder}, function(data){
+    $("#Gallery"+galleryID).find(".dropzone").remove();
     $("#Gallery"+galleryID).find(".thumbs").html(data);
     $("#Gallery"+galleryID).find(".thumbs").prepend('<li style="list-style-type: none;"/>');
     $("#Gallery"+galleryID).find(".thumbs").append('<div style="clear: both;"/>');
@@ -550,6 +554,20 @@ function jstree_ddclick(node)
     }
 }
 
+function tabContent(pageId, tabId)
+{
+  $.get("/Page/GetPageEditorPanel/"+pageId, function(data){
+      $("#"+tabId).html(data);
+      init();
+      var ids = new Array();
+      $("#"+tabId).find(".xinha-editor").each(function(index){
+      //$(".xinha-editor").each(function(index){
+        ids[index] = $(this).attr("id");
+      });
+      xinha_init(ids);
+  });
+}
+
 function jstree_savetree()
 { 
   //alert("move");
@@ -569,20 +587,6 @@ function xinha_init(editor_ids)
   var xinha_config = new Xinha.Config();
   xinha_editors = Xinha.makeEditors(editor_ids, xinha_config, xinha_plugins);
   Xinha.startEditors(xinha_editors);
-}
-
-function tabContent(pageId, tabId)
-{
-  $.get("/Page/GetPageEditorPanel/"+pageId, function(data){
-      $("#"+tabId).html(data);
-      init();
-      var ids = new Array();
-      $("#"+tabId).find(".xinha-editor").each(function(index){
-      //$(".xinha-editor").each(function(index){
-        ids[index] = $(this).attr("id");
-      });
-      xinha_init(ids);
-  });
 }
 
 /************************************************************************************************************************************************************

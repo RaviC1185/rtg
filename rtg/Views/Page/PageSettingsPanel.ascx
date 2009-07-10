@@ -1,3 +1,4 @@
+<%@ Import Namespace="rtg.Models" %>
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<rtg.Models.Page>" %>
 <% using (Html.BeginForm("SavePageSettings", "Page", new { id = Model.PageID }, FormMethod.Post, new { id = "SettingsForm" }))
    {%>
@@ -13,6 +14,14 @@
 </p>
 <p>
   <label>Visable in menu</label><%= Html.CheckBox("DisplayInMenu", Model.DisplayInMenu == true, new { @class = "SettingsClick" })%>
+</p>
+<p>
+  <label>Page Type</label>
+  <% 
+     rtgDataContext db = new rtgDataContext();
+     SelectList sl = new SelectList(db.PageTemplates, "TemplateID", "Title", Model.PageTemplate); 
+  %>
+  <%= Html.DropDownList("TemplateID", sl, new { @class = "SettingsClick" })%>
 </p>
 <input type="submit" value="Save" id="SettingsSave" style="display:none;clear:both;"/>
 <% } %>

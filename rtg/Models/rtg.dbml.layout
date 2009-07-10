@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.375, 8.5" name="rtg">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12, 8.5" name="rtg">
   <DataContextMoniker Name="/rtgDataContext" />
   <nestedChildShapes>
     <classShape Id="3fc05164-e4b0-4b12-9e54-c1b6cdc02fa9" absoluteBounds="0.875, 0.75, 2, 3.3970157877604166">
@@ -8,52 +8,52 @@
         <elementListCompartment Id="51f68ce2-83dd-4c2e-b8d4-389f6decded5" absoluteBounds="0.89000000000000012, 1.21, 1.9700000000000002, 2.8370157877604165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="621d265c-4921-40b6-8768-980f197c8fdb" absoluteBounds="3.75, 1, 2, 1.4248478190104168">
+    <classShape Id="621d265c-4921-40b6-8768-980f197c8fdb" absoluteBounds="3.75, 1.875, 2, 1.4248478190104168">
       <DataClassMoniker Name="/rtgDataContext/PageObject" />
       <nestedChildShapes>
-        <elementListCompartment Id="a540b338-0296-4798-906d-3d40116c5bfe" absoluteBounds="3.7650000000000006, 1.46, 1.9700000000000002, 0.86484781901041674" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="a540b338-0296-4798-906d-3d40116c5bfe" absoluteBounds="3.7650000000000006, 2.335, 1.9700000000000002, 0.86484781901041674" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="c9a2b6b1-2a28-4754-a25b-39194cdf70b0" absoluteBounds="3.875, 3.5, 2, 1.5891951497395831">
+    <classShape Id="c9a2b6b1-2a28-4754-a25b-39194cdf70b0" absoluteBounds="4.125, 3.75, 2, 1.5891951497395831">
       <DataClassMoniker Name="/rtgDataContext/Gallery" />
       <nestedChildShapes>
-        <elementListCompartment Id="cc375472-58d1-4288-a8ff-dece73b3459f" absoluteBounds="3.8899999999999997, 3.96, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="cc375472-58d1-4288-a8ff-dece73b3459f" absoluteBounds="4.14, 4.21, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="0b843335-f926-40ca-bd95-1ec42d64c8b8" absoluteBounds="1.375, 4.875, 2, 1.0961531575520833">
+    <classShape Id="0b843335-f926-40ca-bd95-1ec42d64c8b8" absoluteBounds="1, 5.25, 2, 1.0961531575520833">
       <DataClassMoniker Name="/rtgDataContext/GalleryCategory" />
       <nestedChildShapes>
-        <elementListCompartment Id="92cda77b-aa90-4e80-ade8-16086df594f0" absoluteBounds="1.3900000000000006, 5.335, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="92cda77b-aa90-4e80-ade8-16086df594f0" absoluteBounds="1.0150000000000006, 5.71, 1.9700000000000002, 0.53615315755208326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="5ec9cd99-e11b-4134-86eb-0949f1c25f25" absoluteBounds="6.75, 2.25, 2, 1.9178898111979166">
+    <classShape Id="5ec9cd99-e11b-4134-86eb-0949f1c25f25" absoluteBounds="6.75, 3.5, 2, 1.9178898111979166">
       <DataClassMoniker Name="/rtgDataContext/GalleryImage" />
       <nestedChildShapes>
-        <elementListCompartment Id="03a400fb-452a-4a79-a7e2-c12b2bbaf152" absoluteBounds="6.765, 2.71, 1.9700000000000002, 1.3578898111979165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="03a400fb-452a-4a79-a7e2-c12b2bbaf152" absoluteBounds="6.765, 3.96, 1.9700000000000002, 1.3578898111979165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.875 : 1.71242390950521); (3.75 : 1.71242390950521)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.875 : 2.58742390950521); (3.75 : 2.58742390950521)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/rtgDataContext/Page/Page_PageObject" />
       <nodes>
         <classShapeMoniker Id="3fc05164-e4b0-4b12-9e54-c1b6cdc02fa9" />
         <classShapeMoniker Id="621d265c-4921-40b6-8768-980f197c8fdb" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.875 : 3.82350789388021); (3.875 : 3.82350789388021)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.875 : 3.94850789388021); (4.125 : 3.94850789388021)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/rtgDataContext/Page/Page_Gallery" />
       <nodes>
         <classShapeMoniker Id="3fc05164-e4b0-4b12-9e54-c1b6cdc02fa9" />
         <classShapeMoniker Id="c9a2b6b1-2a28-4754-a25b-39194cdf70b0" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.875 : 3.83394490559896); (6.75 : 3.83394490559896)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.125 : 4.54459757486979); (6.75 : 4.54459757486979)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/rtgDataContext/Gallery/Gallery_GalleryImage" />
       <nodes>
         <classShapeMoniker Id="c9a2b6b1-2a28-4754-a25b-39194cdf70b0" />
         <classShapeMoniker Id="5ec9cd99-e11b-4134-86eb-0949f1c25f25" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.375 : 4.875); (2.375 : 4.5366442207532); (3.875 : 4.5366442207532)]" fixedFrom="Algorithm" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(3 : 5.84267465364583); (5.125 : 5.84267465364583); (5.125 : 5.33919514973958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/rtgDataContext/GalleryCategory/GalleryCategory_Gallery" />
       <nodes>
         <classShapeMoniker Id="0b843335-f926-40ca-bd95-1ec42d64c8b8" />
@@ -67,11 +67,24 @@
         <classShapeMoniker Id="3fc05164-e4b0-4b12-9e54-c1b6cdc02fa9" />
       </nodes>
     </associationConnector>
-    <classShape Id="84ce2c40-401e-490c-842a-dee2268f558c" absoluteBounds="9.125, 0.5, 2, 2.24658447265625">
+    <classShape Id="84ce2c40-401e-490c-842a-dee2268f558c" absoluteBounds="9.75, 0.625, 2, 2.24658447265625">
       <DataClassMoniker Name="/rtgDataContext/Setting" />
       <nestedChildShapes>
-        <elementListCompartment Id="28fa9299-8824-4e6e-a5fc-84cd1dfbc3c8" absoluteBounds="9.14, 0.96, 1.9700000000000002, 1.68658447265625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="28fa9299-8824-4e6e-a5fc-84cd1dfbc3c8" absoluteBounds="9.765, 1.085, 1.9700000000000002, 1.68658447265625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="c834ae37-be9b-4f40-9384-73b85120d7e4" absoluteBounds="6.375, 0.5, 2, 2.24658447265625">
+      <DataClassMoniker Name="/rtgDataContext/PageTemplate" />
+      <nestedChildShapes>
+        <elementListCompartment Id="75da6b2f-b487-409f-9fc1-7fead0f61cd7" absoluteBounds="6.3900000000000006, 0.96, 1.9700000000000002, 1.68658447265625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.375 : 1.28125); (2.875 : 1.28125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/rtgDataContext/PageTemplate/PageTemplate_Page" />
+      <nodes>
+        <classShapeMoniker Id="c834ae37-be9b-4f40-9384-73b85120d7e4" />
+        <classShapeMoniker Id="3fc05164-e4b0-4b12-9e54-c1b6cdc02fa9" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

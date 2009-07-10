@@ -71,10 +71,7 @@ namespace rtg.Controllers
     {
       Page p = db.Pages.FirstOrDefault(pg => pg.PageID == id);
 
-      if (p.TemplateID == 1)
-        return View("PageEditorPanel", p);
-      else // if (p.TemplateID == 10)
-        return View("GalleryEditor", p);
+        return View(p.PageTemplate.PageFile, p);
     }
 
     public string AddPage(string title, int? parentid)
@@ -103,6 +100,7 @@ namespace rtg.Controllers
       p.CreatedBy = "admin";
       p.Enabled = true;
       p.Type = "template";
+      p.TemplateID = 1;
 
       PageObject po = new PageObject();
       po.Page = p;
