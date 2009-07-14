@@ -45,12 +45,12 @@ namespace rtg.Models
     partial void InsertGalleryImage(GalleryImage instance);
     partial void UpdateGalleryImage(GalleryImage instance);
     partial void DeleteGalleryImage(GalleryImage instance);
-    partial void InsertSetting(Setting instance);
-    partial void UpdateSetting(Setting instance);
-    partial void DeleteSetting(Setting instance);
     partial void InsertPageTemplate(PageTemplate instance);
     partial void UpdatePageTemplate(PageTemplate instance);
     partial void DeletePageTemplate(PageTemplate instance);
+    partial void InsertSetting(Setting instance);
+    partial void UpdateSetting(Setting instance);
+    partial void DeleteSetting(Setting instance);
     #endregion
 		
 		public rtgDataContext() : 
@@ -123,19 +123,19 @@ namespace rtg.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Setting> Settings
-		{
-			get
-			{
-				return this.GetTable<Setting>();
-			}
-		}
-		
 		public System.Data.Linq.Table<PageTemplate> PageTemplates
 		{
 			get
 			{
 				return this.GetTable<PageTemplate>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Setting> Settings
+		{
+			get
+			{
+				return this.GetTable<Setting>();
 			}
 		}
 	}
@@ -1532,260 +1532,6 @@ namespace rtg.Models
 		}
 	}
 	
-	[Table(Name="dbo.Settings")]
-	public partial class Setting : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _SettingID;
-		
-		private string _SettingKey;
-		
-		private string _Tab;
-		
-		private string _Category;
-		
-		private string _Label;
-		
-		private string _Type;
-		
-		private string _Value;
-		
-		private System.Nullable<int> _ListOrder;
-		
-		private System.Nullable<bool> _System;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSettingIDChanging(int value);
-    partial void OnSettingIDChanged();
-    partial void OnSettingKeyChanging(string value);
-    partial void OnSettingKeyChanged();
-    partial void OnTabChanging(string value);
-    partial void OnTabChanged();
-    partial void OnCategoryChanging(string value);
-    partial void OnCategoryChanged();
-    partial void OnLabelChanging(string value);
-    partial void OnLabelChanged();
-    partial void OnTypeChanging(string value);
-    partial void OnTypeChanged();
-    partial void OnValueChanging(string value);
-    partial void OnValueChanged();
-    partial void OnListOrderChanging(System.Nullable<int> value);
-    partial void OnListOrderChanged();
-    partial void OnSystemChanging(System.Nullable<bool> value);
-    partial void OnSystemChanged();
-    #endregion
-		
-		public Setting()
-		{
-			OnCreated();
-		}
-		
-		[Column(Storage="_SettingID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int SettingID
-		{
-			get
-			{
-				return this._SettingID;
-			}
-			set
-			{
-				if ((this._SettingID != value))
-				{
-					this.OnSettingIDChanging(value);
-					this.SendPropertyChanging();
-					this._SettingID = value;
-					this.SendPropertyChanged("SettingID");
-					this.OnSettingIDChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_SettingKey", DbType="NVarChar(100)")]
-		public string SettingKey
-		{
-			get
-			{
-				return this._SettingKey;
-			}
-			set
-			{
-				if ((this._SettingKey != value))
-				{
-					this.OnSettingKeyChanging(value);
-					this.SendPropertyChanging();
-					this._SettingKey = value;
-					this.SendPropertyChanged("SettingKey");
-					this.OnSettingKeyChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_Tab", DbType="NVarChar(100)")]
-		public string Tab
-		{
-			get
-			{
-				return this._Tab;
-			}
-			set
-			{
-				if ((this._Tab != value))
-				{
-					this.OnTabChanging(value);
-					this.SendPropertyChanging();
-					this._Tab = value;
-					this.SendPropertyChanged("Tab");
-					this.OnTabChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_Category", DbType="NVarChar(100)")]
-		public string Category
-		{
-			get
-			{
-				return this._Category;
-			}
-			set
-			{
-				if ((this._Category != value))
-				{
-					this.OnCategoryChanging(value);
-					this.SendPropertyChanging();
-					this._Category = value;
-					this.SendPropertyChanged("Category");
-					this.OnCategoryChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_Label", DbType="NVarChar(500)")]
-		public string Label
-		{
-			get
-			{
-				return this._Label;
-			}
-			set
-			{
-				if ((this._Label != value))
-				{
-					this.OnLabelChanging(value);
-					this.SendPropertyChanging();
-					this._Label = value;
-					this.SendPropertyChanged("Label");
-					this.OnLabelChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_Type", DbType="NVarChar(50)")]
-		public string Type
-		{
-			get
-			{
-				return this._Type;
-			}
-			set
-			{
-				if ((this._Type != value))
-				{
-					this.OnTypeChanging(value);
-					this.SendPropertyChanging();
-					this._Type = value;
-					this.SendPropertyChanged("Type");
-					this.OnTypeChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_Value", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Value
-		{
-			get
-			{
-				return this._Value;
-			}
-			set
-			{
-				if ((this._Value != value))
-				{
-					this.OnValueChanging(value);
-					this.SendPropertyChanging();
-					this._Value = value;
-					this.SendPropertyChanged("Value");
-					this.OnValueChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_ListOrder", DbType="Int")]
-		public System.Nullable<int> ListOrder
-		{
-			get
-			{
-				return this._ListOrder;
-			}
-			set
-			{
-				if ((this._ListOrder != value))
-				{
-					this.OnListOrderChanging(value);
-					this.SendPropertyChanging();
-					this._ListOrder = value;
-					this.SendPropertyChanged("ListOrder");
-					this.OnListOrderChanged();
-				}
-			}
-		}
-		
-		[Column(Storage="_System", DbType="Bit")]
-		public System.Nullable<bool> System
-		{
-			get
-			{
-				return this._System;
-			}
-			set
-			{
-				if ((this._System != value))
-				{
-					this.OnSystemChanging(value);
-					this.SendPropertyChanging();
-					this._System = value;
-					this.SendPropertyChanged("System");
-					this.OnSystemChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[Table(Name="dbo.PageTemplates")]
 	public partial class PageTemplate : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2065,6 +1811,284 @@ namespace rtg.Models
 		{
 			this.SendPropertyChanging();
 			entity.PageTemplate = null;
+		}
+	}
+	
+	[Table(Name="dbo.Settings")]
+	public partial class Setting : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _SettingID;
+		
+		private string _SettingKey;
+		
+		private string _SettingKey2;
+		
+		private string _Tab;
+		
+		private string _Category;
+		
+		private string _Label;
+		
+		private string _Type;
+		
+		private string _Value;
+		
+		private System.Nullable<int> _ListOrder;
+		
+		private System.Nullable<bool> _System;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSettingIDChanging(int value);
+    partial void OnSettingIDChanged();
+    partial void OnSettingKeyChanging(string value);
+    partial void OnSettingKeyChanged();
+    partial void OnSettingKey2Changing(string value);
+    partial void OnSettingKey2Changed();
+    partial void OnTabChanging(string value);
+    partial void OnTabChanged();
+    partial void OnCategoryChanging(string value);
+    partial void OnCategoryChanged();
+    partial void OnLabelChanging(string value);
+    partial void OnLabelChanged();
+    partial void OnTypeChanging(string value);
+    partial void OnTypeChanged();
+    partial void OnValueChanging(string value);
+    partial void OnValueChanged();
+    partial void OnListOrderChanging(System.Nullable<int> value);
+    partial void OnListOrderChanged();
+    partial void OnSystemChanging(System.Nullable<bool> value);
+    partial void OnSystemChanged();
+    #endregion
+		
+		public Setting()
+		{
+			OnCreated();
+		}
+		
+		[Column(Storage="_SettingID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int SettingID
+		{
+			get
+			{
+				return this._SettingID;
+			}
+			set
+			{
+				if ((this._SettingID != value))
+				{
+					this.OnSettingIDChanging(value);
+					this.SendPropertyChanging();
+					this._SettingID = value;
+					this.SendPropertyChanged("SettingID");
+					this.OnSettingIDChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingKey", DbType="NVarChar(100)")]
+		public string SettingKey
+		{
+			get
+			{
+				return this._SettingKey;
+			}
+			set
+			{
+				if ((this._SettingKey != value))
+				{
+					this.OnSettingKeyChanging(value);
+					this.SendPropertyChanging();
+					this._SettingKey = value;
+					this.SendPropertyChanged("SettingKey");
+					this.OnSettingKeyChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_SettingKey2", DbType="NVarChar(100)")]
+		public string SettingKey2
+		{
+			get
+			{
+				return this._SettingKey2;
+			}
+			set
+			{
+				if ((this._SettingKey2 != value))
+				{
+					this.OnSettingKey2Changing(value);
+					this.SendPropertyChanging();
+					this._SettingKey2 = value;
+					this.SendPropertyChanged("SettingKey2");
+					this.OnSettingKey2Changed();
+				}
+			}
+		}
+		
+		[Column(Storage="_Tab", DbType="NVarChar(100)")]
+		public string Tab
+		{
+			get
+			{
+				return this._Tab;
+			}
+			set
+			{
+				if ((this._Tab != value))
+				{
+					this.OnTabChanging(value);
+					this.SendPropertyChanging();
+					this._Tab = value;
+					this.SendPropertyChanged("Tab");
+					this.OnTabChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Category", DbType="NVarChar(100)")]
+		public string Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this.OnCategoryChanging(value);
+					this.SendPropertyChanging();
+					this._Category = value;
+					this.SendPropertyChanged("Category");
+					this.OnCategoryChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Label", DbType="NVarChar(500)")]
+		public string Label
+		{
+			get
+			{
+				return this._Label;
+			}
+			set
+			{
+				if ((this._Label != value))
+				{
+					this.OnLabelChanging(value);
+					this.SendPropertyChanging();
+					this._Label = value;
+					this.SendPropertyChanged("Label");
+					this.OnLabelChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Type", DbType="NVarChar(50)")]
+		public string Type
+		{
+			get
+			{
+				return this._Type;
+			}
+			set
+			{
+				if ((this._Type != value))
+				{
+					this.OnTypeChanging(value);
+					this.SendPropertyChanging();
+					this._Type = value;
+					this.SendPropertyChanged("Type");
+					this.OnTypeChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Value", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Value
+		{
+			get
+			{
+				return this._Value;
+			}
+			set
+			{
+				if ((this._Value != value))
+				{
+					this.OnValueChanging(value);
+					this.SendPropertyChanging();
+					this._Value = value;
+					this.SendPropertyChanged("Value");
+					this.OnValueChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_ListOrder", DbType="Int")]
+		public System.Nullable<int> ListOrder
+		{
+			get
+			{
+				return this._ListOrder;
+			}
+			set
+			{
+				if ((this._ListOrder != value))
+				{
+					this.OnListOrderChanging(value);
+					this.SendPropertyChanging();
+					this._ListOrder = value;
+					this.SendPropertyChanged("ListOrder");
+					this.OnListOrderChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_System", DbType="Bit")]
+		public System.Nullable<bool> System
+		{
+			get
+			{
+				return this._System;
+			}
+			set
+			{
+				if ((this._System != value))
+				{
+					this.OnSystemChanging(value);
+					this.SendPropertyChanging();
+					this._System = value;
+					this.SendPropertyChanged("System");
+					this.OnSystemChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

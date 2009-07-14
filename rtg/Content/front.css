@@ -1,0 +1,29 @@
+﻿body{}
+a {border:0;}
+image{border:0;}
+#page{width:1000px; margin: 0 auto; position:relative;}
+#header{width:1000px;}
+
+#menucontainer{}
+
+#menu                               {float:left; width: 150px; background-color:#fefefe;}
+  #menu ul                          {margin:0; padding:0;}
+    #menu ul li                     {list-style-type:none; position:relative;}
+      #menu ul li a                 { display:block; padding:5px; background-color:#fefefe; color:#c7c7c7; text-decoration:none;}
+      #menu ul li a:hover           {background-color:#676cbb; color:#c5c8f1;}
+      #menu ul li a.selected        {background-color:#a4a4d8; color:#c5c8f1;}
+
+      #menu ul li ul                { display: none; }
+      #menu ul li:hover ul          {}
+
+      #menu ul li ul.submenu          {margin:0; padding:0;  background-color:#9a91c8; width:100px;}
+        #menu ul li ul.submenu li     {list-style-type:none;}
+          #menu ul li ul.submenu li a { display:block; padding:5px; background-color:#9a91c8; color:#3a3458; text-decoration:none;}
+
+#submenucontainerbelow, #submenucontainerseperate  {background-color:#9a91c8; }
+#submenucontainerseperate {float:left; width:850px;}      
+  ul.submenu          {margin:0; padding:0;  background-color:#9a91c8;}
+    ul.submenu li     {list-style-type:none; float:left;}
+      ul.submenu li a { display:block; padding:5px; background-color:#9a91c8; color:#3a3458; text-decoration:none;}      
+          
+#content {float:left; width:800px;} 

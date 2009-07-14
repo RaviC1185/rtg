@@ -56,6 +56,136 @@ namespace rtg.Controllers
       }
 
       db.SubmitChanges();
+
+      GenerateCSS();
+    }
+
+    private void GenerateCSS()
+    {
+      IDictionary<string, string> settings = GenerateSettingsDictionary();
+
+      string menucontainer = "";
+      string menu = "";
+      string menu_ul_li = "";
+      string menu_ul_li_a = "";
+      string menu_ul_li_a_hover = "";
+      string menu_ul_li_a_selected = "";
+
+      string menu_ul_li_hover_ul = "";
+
+      string submenu = "";
+      string submenu_li = "";
+      string submenu_li_a = "";
+      string submenu_li_a_hover = "";
+      string submenu_li_a_selected = "";
+
+      string submenu_bg = "";
+      string submenu_seperate = "";
+
+      string content = "";
+
+      //now put arrage settings into appropiate tags
+
+      //#menucontainer
+      if (settings["menu_position"] == "header" && settings["submenu_position"] != "below_header") 
+        menucontainer = string.Format("position: relative; top: {0}px;", settings["menu_position_topmargin"]);
+
+      //#menu
+      if (settings["menu_orientation"] == "horizontal")
+        menu = string.Format("width: 1000px; background-color: #{0};", settings["menu_background_extend"]);
+      else
+        menu = string.Format("width: 150px; background-color: #{0};", settings["menu_background_extend"]);
+
+      //#menu ul li
+      if(settings["menu_orientation"] == "horizontal")
+        menu_ul_li = "float:left;";
+
+      if (settings["menu_background_icon"] != "")
+        menu_ul_li += string.Format("list-style-image: {0};padding: 0;", settings["menu_background_icon"]);
+      else
+        menu_ul_li += "list-style-type:none;";
+
+      //#menu ul li a
+      menu_ul_li_a          = string.Format("color: #{0}; background-color: #{1};", settings["menu_text_colour"], settings["menu_background_colour"]);
+      menu_ul_li_a_hover    = string.Format("color: #{0}; background-color: #{1};", settings["menu_text_hover"], settings["menu_background_hover"]);
+      menu_ul_li_a_selected = string.Format("color: #{0}; background-color: #{1};", settings["menu_text_selected"], settings["menu_background_selected"]);
+
+      //#menu ul li:hover ul
+      if (settings["submenu_position"] == "dropdown" || settings["submenu_position"] == "leftcolumn")
+        menu_ul_li_hover_ul = "display:block;";
+
+      //.submenu
+      submenu = string.Format("background-color: #{0}", settings["submenu_background_extend"]);
+ 
+      // .submenu li
+      if(settings["submenu_position"] == "below_menu" || settings["submenu_position"] == "below_header")
+        submenu_li = "float: left;";  
+      else
+         submenu_li = "float:none;"; 
+
+      // .submenu li a
+      submenu_li_a          = string.Format("color: #{0}; background-color: #{1};", settings["submenu_text_colour"], settings["submenu_background_colour"]);
+      submenu_li_a_hover    = string.Format("color: #{0}; background-color: #{1};", settings["submenu_text_hover"], settings["submenu_background_hover"]);
+      submenu_li_a_selected = string.Format("color: #{0}; background-color: #{1};", settings["menu_text_selected"], settings["submenu_background_selected"]);
+
+      // #submenucontainerbelow, #submenucontainerseperate
+      submenu_bg = string.Format("background_color: #{0}", settings["submenu_background_extend"]);
+
+      if (settings["menu_orientation"] == "vertical" && settings["submenu_position"] == "below_header")
+        submenu_seperate = "float:left; width:850px;";
+      else if ( settings["submenu_position"] == "leftcolumn")
+        submenu_seperate = "float:left;";
+      
+      //content
+      if (settings["menu_orientation"] == "vertical" && settings["submenu_position"] == "below_header")
+        content = "float:left; width:850px;";
+      else if (settings["submenu_position"] == "leftcolumn")
+        content = "float:left;";
+
+
+      //grab the css template and write over placeholders
+
+      System.IO.StreamReader fileContents = new System.IO.StreamReader("/Content/template.css");
+      string css = fileContents.ReadToEnd();
+      fileContents.Close();
+
+      css = css.Replace("/*menucontainer*/", menucontainer);
+      css = css.Replace("/*menu*/", menu);
+      css = css.Replace("/*menu_ul_li*/", menu_ul_li);
+      css = css.Replace("/*menu_ul_li_a*/", menu_ul_li_a);
+      css = css.Replace("/*menu_ul_li_a_hover*/", menu_ul_li_a_hover);
+      css = css.Replace("/*menu_ul_li_a_selected*/", menu_ul_li_a_selected);
+      css = css.Replace("/*menu_ul_li_hover_ul*/", menu_ul_li_hover_ul);
+      css = css.Replace("/*submenu*/", submenu);
+      css = css.Replace("/*submenu_li*/", submenu_li);
+      css = css.Replace("/*submenu_li_a*/", submenu_li_a);
+      css = css.Replace("/*submenu_li_a_hover*/", submenu_li_a_hover);
+      css = css.Replace("/*submenu_li_a_selected*/", submenu_li_a_selected);
+      css = css.Replace("/*submenu_bg*/", submenu_bg);
+      css = css.Replace("/*submenu_seperate*/", submenu_seperate);
+      css = css.Replace("/*content*/", content);
+
+      System.IO.StreamWriter newCssFile = new System.IO.StreamWriter("/Content/frontend.css");
+      newCssFile.Write(css);
+      newCssFile.Flush();
+
+    }
+
+    private IDictionary<string, string> GenerateSettingsDictionary()
+    {
+      IDictionary<string, string> settings = new Dictionary<string, string>();
+      foreach (Setting s in db.Settings)
+      {
+        if (s.SettingKey2 == null)
+        {
+          settings.Add(s.SettingKey, s.Value); 
+        }
+        else if (s.Value == "true")
+        {
+          settings.Add(s.SettingKey, s.SettingKey2); 
+        }
+      }
+      return settings;
     }
 
     public ActionResult SelectStyle(int id)

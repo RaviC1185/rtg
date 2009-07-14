@@ -76,6 +76,11 @@
       <DependentUpon>rtg.dbml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Plugins\ColourPicker\css\colorpicker.css" />
@@ -1307,6 +1312,15 @@
     <None Include="Models\rtg.dbml.layout">
       <DependentUpon>rtg.dbml</DependentUpon>
     </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Content\front.css" />
+    <Content Include="Content\template.css" />
+    <Content Include="Scripts\frontend.js" />
+    <Content Include="Views\Home\HomePage.aspx" />
+    <Content Include="Views\Shared\FrontEnd.Master" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
