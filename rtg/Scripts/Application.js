@@ -60,6 +60,10 @@ $('.SubmenuBelow > ul > li').hover(
     },
     lang : {new_node: "New Page"}
   });
+
+  if($('.jstree').length > 0){ //stop from running when jstree is not on the page.
+    $.tree_reference('jstree_1').open_all();
+  }
   
   $(".AddPage").click(function(){
     nodeCreate = 1;
@@ -79,10 +83,6 @@ $('.SubmenuBelow > ul > li').hover(
       $.post("/Page/Delete/"+id);
     }
   });
-  
-  if($('.jstree').lenght > 0){ //stop from running when jstree is not on the page.
-    $.tree_reference('jstree_1').open_all();
-  }
   
 /************************************************************************************************************************************************************
 ************ Settings

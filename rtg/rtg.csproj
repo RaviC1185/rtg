@@ -62,6 +62,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PageController.cs" />
+    <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -1317,10 +1318,16 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Content\front.css" />
+    <Content Include="Content\frontend.css" />
     <Content Include="Content\template.css" />
     <Content Include="Scripts\frontend.js" />
     <Content Include="Views\Home\HomePage.aspx" />
+    <Content Include="Views\Pages\Error.aspx" />
+    <Content Include="Views\Pages\Index.aspx" />
     <Content Include="Views\Shared\FrontEnd.Master" />
+    <Content Include="Views\Shared\Menu.ascx" />
+    <Content Include="Views\Shared\MenuItem.ascx" />
+    <Content Include="Views\Shared\MenuSubItem.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

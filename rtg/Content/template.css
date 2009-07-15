@@ -13,14 +13,14 @@ image{border:0;}
       #menu ul li a:hover           {/*menu_ul_li_a_hover*/}
       #menu ul li a.selected        {/*menu_ul_li_a_selected*/}
 
-      #menu ul li ul                { display: none; }
-      #menu ul li:hover ul          {/*#menu_ul_li_hover_ul*/}
+      #menu ul li ul                { display: none; /*menu_ul_li_ul*/ }
+      #menu ul li:hover ul          {/*menu_ul_li_hover_ul*/}
 
       #menu ul li ul.submenu                    {margin:0; padding:0;  /*submenu*/}
-        #menu ul li ul.submenu li               {/*submenu_li*/}
+        #menu ul li ul.submenu li               {list-style-type:none; /*submenu_li*/}
           #menu ul li ul.submenu li a           { /*submenu_li_a*/}
           #menu ul li ul.submenu li a:hover     { /*submenu_li_a_hover*/}
-          #menu ul li ul.submenu li a.selected  { /*submenu_li_a_selcted*/}
+          #menu ul li ul.submenu li a.selected  { /*submenu_li_a_selected*/}
 
 #submenucontainerbelow, #submenucontainerseperate  {/*submenu_bg*/}
 #submenucontainerseperate {/*submenu_seperate*/}      
@@ -28,6 +28,6 @@ image{border:0;}
     ul.submenu li               {/*submenu_li*/}
       ul.submenu li a           { /*submenu_li_a*/}
       ul.submenu li a:hover     { /*submenu_li_a_hover*/}
-      ul.submenu li a.selected  { /*submenu_li_a_selcted*/}  
+      ul.submenu li a.selected  { /*submenu_li_a_selected*/}  
           
 #content {margin-top: 40px; /*content*/} 

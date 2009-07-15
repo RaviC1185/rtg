@@ -39,20 +39,23 @@ namespace rtg.Controllers
       }
 
       //now grab the stylesheets
-      string[] stylesheets = Request.Form["style_sheet"].Split(',');
-      IEnumerable<Setting> stylesheetSettigns = db.Settings.Where(st => st.SettingKey == "style_sheet");
+      if (Request.Form.AllKeys.Contains("style_sheet"))
+      {
+        string[] stylesheets = Request.Form["style_sheet"].Split(',');
+        IEnumerable<Setting> stylesheetSettigns = db.Settings.Where(st => st.SettingKey == "style_sheet");
 
-      int i = 0;
-      foreach (Setting s in stylesheetSettigns)
-      {
-        s.Value = stylesheets[i++];
-      }
-      
-      //if stylesheets are added.
-      if (stylesheets.Length > stylesheetSettigns.Count())
-      {
-        int index = stylesheets.Length - stylesheetSettigns.Count();
-        //blah blah do this stuff later
+        int i = 0;
+        foreach (Setting s in stylesheetSettigns)
+        {
+          s.Value = stylesheets[i++];
+        }
+
+        //if stylesheets are added.
+        if (stylesheets.Length > stylesheetSettigns.Count())
+        {
+          int index = stylesheets.Length - stylesheetSettigns.Count();
+          //blah blah do this stuff later
+        }
       }
 
       db.SubmitChanges();
@@ -71,6 +74,7 @@ namespace rtg.Controllers
       string menu_ul_li_a_hover = "";
       string menu_ul_li_a_selected = "";
 
+      string menu_ul_li_ul = "";
       string menu_ul_li_hover_ul = "";
 
       string submenu = "";
@@ -88,7 +92,7 @@ namespace rtg.Controllers
 
       //#menucontainer
       if (settings["menu_position"] == "header" && settings["submenu_position"] != "below_header") 
-        menucontainer = string.Format("position: relative; top: {0}px;", settings["menu_position_topmargin"]);
+        menucontainer = string.Format("position: absolute; top: {0}px;", settings["menu_position_topmargin"]);
 
       //#menu
       if (settings["menu_orientation"] == "horizontal")
@@ -110,13 +114,35 @@ namespace rtg.Controllers
       menu_ul_li_a_hover    = string.Format("color: #{0}; background-color: #{1};", settings["menu_text_hover"], settings["menu_background_hover"]);
       menu_ul_li_a_selected = string.Format("color: #{0}; background-color: #{1};", settings["menu_text_selected"], settings["menu_background_selected"]);
 
+      //menu ul li ul
+      //if (settings["submenu_position"] == "dropdown" || settings["submenu_position"] == "leftcolumn")
+      
+      if (settings["menu_orientation"] == "horizontal" && settings["submenu_position"] == "dropdown")
+        menu_ul_li_ul = "position:absolute; top: 30px; left:0;";
+      else if (settings["menu_orientation"] == "vertical" && settings["submenu_position"] == "dropdown")
+        menu_ul_li_ul = "position:absolute; top: 0px; left:150px;";
+      //else if (settings["menu_orientation"] == "vertical" && settings["submenu_position"] == "leftcolumn")
+        //menu_ul_li_ul
+      
+      
       //#menu ul li:hover ul
       if (settings["submenu_position"] == "dropdown" || settings["submenu_position"] == "leftcolumn")
         menu_ul_li_hover_ul = "display:block;";
 
       //.submenu
-      submenu = string.Format("background-color: #{0}", settings["submenu_background_extend"]);
- 
+      submenu = string.Format("background-color: #{0};", settings["submenu_background_extend"]);
+
+      if ((settings["submenu_position"] == "below_menu" || settings["submenu_position"] == "below_header") && settings["menu_extend"] == "full")
+        submenu += "width: 1000px;";
+      else if (settings["submenu_position"] == "dropdown" || settings["submenu_position"] == "leftcolumn")
+        submenu += "width: 150px;";
+      else if( settings["submenu_position"] == "below_header" 
+            && settings["menu_extend"] == "full" 
+            && settings["menu_orientation"] == "vertical"
+            && settings["menu_position"] == "content")
+        submenu += "width: 850px;";
+
+
       // .submenu li
       if(settings["submenu_position"] == "below_menu" || settings["submenu_position"] == "below_header")
         submenu_li = "float: left;";  
@@ -129,7 +155,7 @@ namespace rtg.Controllers
       submenu_li_a_selected = string.Format("color: #{0}; background-color: #{1};", settings["menu_text_selected"], settings["submenu_background_selected"]);
 
       // #submenucontainerbelow, #submenucontainerseperate
-      submenu_bg = string.Format("background_color: #{0}", settings["submenu_background_extend"]);
+      submenu_bg = string.Format("background-color: #{0}", settings["submenu_background_extend"]);
 
       if (settings["menu_orientation"] == "vertical" && settings["submenu_position"] == "below_header")
         submenu_seperate = "float:left; width:850px;";
@@ -145,7 +171,7 @@ namespace rtg.Controllers
 
       //grab the css template and write over placeholders
 
-      System.IO.StreamReader fileContents = new System.IO.StreamReader("/Content/template.css");
+      System.IO.StreamReader fileContents = new System.IO.StreamReader(rtg.Properties.Settings.Default.CssFolder+"template.css");
       string css = fileContents.ReadToEnd();
       fileContents.Close();
 
@@ -155,7 +181,8 @@ namespace rtg.Controllers
       css = css.Replace("/*menu_ul_li_a*/", menu_ul_li_a);
       css = css.Replace("/*menu_ul_li_a_hover*/", menu_ul_li_a_hover);
       css = css.Replace("/*menu_ul_li_a_selected*/", menu_ul_li_a_selected);
-      css = css.Replace("/*menu_ul_li_hover_ul*/", menu_ul_li_hover_ul);
+      css = css.Replace("/*menu_ul_li_ul*/", menu_ul_li_ul); 
+      css = css.Replace("/*menu_ul_li_hover_ul*/", menu_ul_li_hover_ul); 
       css = css.Replace("/*submenu*/", submenu);
       css = css.Replace("/*submenu_li*/", submenu_li);
       css = css.Replace("/*submenu_li_a*/", submenu_li_a);
@@ -165,10 +192,10 @@ namespace rtg.Controllers
       css = css.Replace("/*submenu_seperate*/", submenu_seperate);
       css = css.Replace("/*content*/", content);
 
-      System.IO.StreamWriter newCssFile = new System.IO.StreamWriter("/Content/frontend.css");
+      System.IO.StreamWriter newCssFile = new System.IO.StreamWriter(rtg.Properties.Settings.Default.CssFolder+"frontend.css");
       newCssFile.Write(css);
       newCssFile.Flush();
-
+      newCssFile.Close();
     }
 
     private IDictionary<string, string> GenerateSettingsDictionary()
@@ -176,7 +203,7 @@ namespace rtg.Controllers
       IDictionary<string, string> settings = new Dictionary<string, string>();
       foreach (Setting s in db.Settings)
       {
-        if (s.SettingKey2 == null)
+        if (s.SettingKey2 == null && s.SettingKey != "style_sheet")
         {
           settings.Add(s.SettingKey, s.Value); 
         }
@@ -347,6 +374,8 @@ namespace rtg.Controllers
         s5.Value = "true";
 
         db.SubmitChanges();
+
+        GenerateCSS();
 
         return View("SettingsTab", db.Settings.Where(st => st.Tab == "Advanced").OrderBy(st => st.ListOrder));
       }

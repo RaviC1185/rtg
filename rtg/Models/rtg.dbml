@@ -19,6 +19,7 @@
       <Column Name="CreatedBy" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
       <Column Name="DateLastModified" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="LastModifiedBy" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Permalink" Type="System.String" DbType="NVarChar(500)" CanBeNull="false" />
       <Association Name="Page_Page" Member="Children" Storage="_Pages" OtherKey="ParentID" Type="Page" />
       <Association Name="Page_PageObject" Member="PageObjects" OtherKey="PageID" Type="PageObject" />
       <Association Name="Page_Gallery" Member="Galleries" OtherKey="PageID" Type="Gallery" />

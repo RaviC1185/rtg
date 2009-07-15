@@ -2,10 +2,10 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.625, 8.5" name="rtg">
   <DataContextMoniker Name="/rtgDataContext" />
   <nestedChildShapes>
-    <classShape Id="3fc05164-e4b0-4b12-9e54-c1b6cdc02fa9" absoluteBounds="0.875, 0.75, 2, 3.3970157877604166">
+    <classShape Id="3fc05164-e4b0-4b12-9e54-c1b6cdc02fa9" absoluteBounds="0.875, 0.75, 2, 3.5613631184895826">
       <DataClassMoniker Name="/rtgDataContext/Page" />
       <nestedChildShapes>
-        <elementListCompartment Id="51f68ce2-83dd-4c2e-b8d4-389f6decded5" absoluteBounds="0.89000000000000012, 1.21, 1.9700000000000002, 2.8370157877604165" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="51f68ce2-83dd-4c2e-b8d4-389f6decded5" absoluteBounds="0.89000000000000012, 1.21, 1.9700000000000002, 3.001363118489583" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="621d265c-4921-40b6-8768-980f197c8fdb" absoluteBounds="3.75, 1.875, 2, 1.4248478190104168">
@@ -39,7 +39,7 @@
         <classShapeMoniker Id="621d265c-4921-40b6-8768-980f197c8fdb" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.875 : 3.94850789388021); (4.125 : 3.94850789388021)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.875 : 4.03068155924479); (4.125 : 4.03068155924479)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/rtgDataContext/Page/Page_Gallery" />
       <nodes>
         <classShapeMoniker Id="3fc05164-e4b0-4b12-9e54-c1b6cdc02fa9" />
@@ -60,7 +60,7 @@
         <classShapeMoniker Id="c9a2b6b1-2a28-4754-a25b-39194cdf70b0" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(1.58423076923077 : 4.14701578776042); (1.58423076923077 : 4.39701578776042); (2.17961538461538 : 4.39701578776042); (2.17961538461538 : 4.14701578776042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(1.58423076923077 : 4.31136311848958); (1.58423076923077 : 4.56136311848958); (2.17961538461538 : 4.56136311848958); (2.17961538461538 : 4.31136311848958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/rtgDataContext/Page/Page_Page" />
       <nodes>
         <classShapeMoniker Id="3fc05164-e4b0-4b12-9e54-c1b6cdc02fa9" />

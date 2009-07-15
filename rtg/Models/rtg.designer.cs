@@ -178,6 +178,8 @@ namespace rtg.Models
 		
 		private string _LastModifiedBy;
 		
+		private string _Permalink;
+		
 		private EntitySet<Page> _Pages;
 		
 		private EntitySet<PageObject> _PageObjects;
@@ -224,6 +226,8 @@ namespace rtg.Models
     partial void OnDateLastModifiedChanged();
     partial void OnLastModifiedByChanging(string value);
     partial void OnLastModifiedByChanged();
+    partial void OnPermalinkChanging(string value);
+    partial void OnPermalinkChanged();
     #endregion
 		
 		public Page()
@@ -560,6 +564,26 @@ namespace rtg.Models
 					this._LastModifiedBy = value;
 					this.SendPropertyChanged("LastModifiedBy");
 					this.OnLastModifiedByChanged();
+				}
+			}
+		}
+		
+		[Column(Storage="_Permalink", DbType="NVarChar(500)", CanBeNull=false)]
+		public string Permalink
+		{
+			get
+			{
+				return this._Permalink;
+			}
+			set
+			{
+				if ((this._Permalink != value))
+				{
+					this.OnPermalinkChanging(value);
+					this.SendPropertyChanging();
+					this._Permalink = value;
+					this.SendPropertyChanged("Permalink");
+					this.OnPermalinkChanged();
 				}
 			}
 		}

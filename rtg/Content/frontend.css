@@ -1,0 +1,33 @@
+body{}
+a {border:0;}
+image{border:0;}
+#page{width:1000px; margin: 0 auto; position:relative;}
+#header{width:1000px;}
+
+#menucontainer{position: absolute; top: 0px;}
+
+#menu                               {width: 150px; background-color: #e83ae8;}
+  #menu ul                          {margin:0; padding:0;}
+    #menu ul li                     {position:relative; list-style-type:none;}
+      #menu ul li a                 {display:block; padding:5px; text-decoration:none; color: #262026; background-color: #fefefe;}
+      #menu ul li a:hover           {color: #171117; background-color: #876fb0;}
+      #menu ul li a.selected        {color: #261a26; background-color: #916191;}
+
+      #menu ul li ul                { display: none; position:absolute; top: 0px; left:150px; }
+      #menu ul li:hover ul          {display:block;}
+
+      #menu ul li ul.submenu                    {margin:0; padding:0;  background-color: #3e6ed6; width: 150px;}
+        #menu ul li ul.submenu li               {list-style-type:none; float:none;}
+          #menu ul li ul.submenu li a           { color: #240d24; background-color: #8c65d4;}
+          #menu ul li ul.submenu li a:hover     { color: #331d33; background-color: #c737c7;}
+          #menu ul li ul.submenu li a.selected  { color: #261a26; background-color: #462066;}
+
+#submenucontainerbelow, #submenucontainerseperate  {background-color: #3e6ed6}
+#submenucontainerseperate {}      
+  ul.submenu          {background-color: #3e6ed6; width: 150px;}
+    ul.submenu li               {float:none;}
+      ul.submenu li a           { color: #240d24; background-color: #8c65d4;}
+      ul.submenu li a:hover     { color: #331d33; background-color: #c737c7;}
+      ul.submenu li a.selected  { color: #261a26; background-color: #462066;}  
+          
+#content {margin-top: 40px; } 
