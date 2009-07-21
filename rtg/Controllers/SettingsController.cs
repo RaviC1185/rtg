@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using rtg.Models;
+using System.IO;
 
 namespace rtg.Controllers
 {
@@ -33,7 +34,7 @@ namespace rtg.Controllers
           }
           else if (s.Type != "stylesheet")
           {
-            s.Value = Request.Form[s.SettingKey];
+            s.Value = ValidateInput(s.Type,Request.Form[s.SettingKey]);
           }
         }
       }
@@ -63,10 +64,48 @@ namespace rtg.Controllers
       GenerateCSS();
     }
 
+    private string ValidateInput(string type, string value)
+    {
+      switch (type)
+      { 
+        case "image":
+          return FileTest(value);
+          break;
+        case "colour":
+          return ColourTest(value);
+          break;
+        case "colour&image":
+          if (FileTest(value) != "")
+            return value;
+          else
+            return ColourTest(value);
+          break;
+        default:
+            return value;
+            break;
+      }
+    }
+
+    private string FileTest(string value)
+    {
+      FileInfo fi = new FileInfo(value);
+      if (fi.Exists)
+        return value;
+      else
+        return "";
+    }
+
+    private string ColourTest(string value)
+    {
+      return value;
+    }
+
     private void GenerateCSS()
     {
       IDictionary<string, string> settings = GenerateSettingsDictionary();
 
+      string body = "";
+      string border = "";
       string menucontainer = "";
       string menu = "";
       string menu_ul_li = "";
@@ -89,6 +128,17 @@ namespace rtg.Controllers
       string content = "";
 
       //now put arrage settings into appropiate tags
+
+      //body
+      body = string.Format("background-color:#{0};", settings["site_bg_color"]);
+      if (settings["site_bg_image"].Length > 0)
+      {
+        body += string.Format("background-image:url({0}); background-repeat:{1};", settings["site_bg_image"], settings["site_bg_repeat"]);
+      }
+
+      //border eg border: solid 10px #cccccc;
+      if(settings["site_border_thickness"].Length>0 && settings["site_border_colour"].Length > 0)
+        border = string.Format("border: solid {0}px #{1};", settings["site_border_thickness"], settings["site_border_colour"]);
 
       //#menucontainer
       if (settings["menu_position"] == "header") 
@@ -174,6 +224,9 @@ namespace rtg.Controllers
       System.IO.StreamReader fileContents = new System.IO.StreamReader(rtg.Properties.Settings.Default.CssFolder+"template.css");
       string css = fileContents.ReadToEnd();
       fileContents.Close();
+
+      css = css.Replace("/*body*/", body);
+      css = css.Replace("/*border*/", border);
 
       css = css.Replace("/*menucontainer*/", menucontainer);
       css = css.Replace("/*menu*/", menu);
