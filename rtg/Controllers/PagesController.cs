@@ -17,7 +17,7 @@ namespace rtg.Controllers
       Page p = db.Pages.FirstOrDefault(pg=>pg.Permalink == id);
       
       if(p != null)
-        return View(p);
+        return View(p.PageTemplate.RenderFile, p);
       else
         return RedirectToAction("Error", new { id = "404" });
     }

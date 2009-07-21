@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PageController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Default.aspx.cs">
@@ -256,17 +256,17 @@
     <Content Include="Plugins\jsTree\_lib\sarissa_ieemu_xpath.js" />
     <Content Include="Scripts\Application.js" />
     <Content Include="Scripts\json2.js" />
-    <Content Include="Views\Page\BlankGallery.ascx" />
-    <Content Include="Views\Page\FilePreview.ascx" />
-    <Content Include="Views\Page\Gallery.ascx" />
-    <Content Include="Views\Page\GalleryCategory.ascx" />
-    <Content Include="Views\Page\GalleryEditor.ascx" />
-    <Content Include="Views\Page\GalleryImage.ascx" />
-    <Content Include="Views\Page\GalleryImageCollection.ascx" />
-    <Content Include="Views\Page\ContentPageEditor.ascx" />
-    <Content Include="Views\Page\PageNode.ascx" />
-    <Content Include="Views\Page\Pages.aspx" />
-    <Content Include="Views\Page\PageSettingsPanel.ascx" />
+    <Content Include="Views\Admin\BlankGallery.ascx" />
+    <Content Include="Views\Admin\FilePreview.ascx" />
+    <Content Include="Views\Admin\Gallery.ascx" />
+    <Content Include="Views\Admin\GalleryCategory.ascx" />
+    <Content Include="Views\Admin\GalleryEditor.ascx" />
+    <Content Include="Views\Admin\GalleryImage.ascx" />
+    <Content Include="Views\Admin\GalleryImageCollection.ascx" />
+    <Content Include="Views\Admin\ContentPageEditor.ascx" />
+    <Content Include="Views\Admin\PageNode.ascx" />
+    <Content Include="Views\Admin\Pages.aspx" />
+    <Content Include="Views\Admin\PageSettingsPanel.ascx" />
     <Content Include="Views\Settings\Index.ascx" />
     <Content Include="Views\Settings\Index.aspx" />
     <Content Include="Views\Settings\Setting.ascx" />
@@ -274,7 +274,6 @@
     <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery-1.3.2.js" />
-    <Content Include="Scripts\jquery-1.3.2.min.js" />
     <Content Include="Views\Account\ChangePassword.aspx" />
     <Content Include="Views\Account\ChangePasswordSuccess.aspx" />
     <Content Include="Views\Account\LogOn.aspx" />
@@ -1322,12 +1321,14 @@
     <Content Include="Content\template.css" />
     <Content Include="Scripts\frontend.js" />
     <Content Include="Views\Home\HomePage.aspx" />
+    <Content Include="Views\Pages\ContentPage.aspx" />
     <Content Include="Views\Pages\Error.aspx" />
     <Content Include="Views\Pages\Index.aspx" />
     <Content Include="Views\Shared\FrontEnd.Master" />
     <Content Include="Views\Shared\Menu.ascx" />
     <Content Include="Views\Shared\MenuItem.ascx" />
     <Content Include="Views\Shared\MenuSubItem.ascx" />
+    <Content Include="Views\Shared\MenuSubmenu.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

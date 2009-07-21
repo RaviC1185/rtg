@@ -49,7 +49,7 @@
             <div id="menucontainer">
             
                 <ul id="menu">              
-                    <li><%= Html.ActionLink("Pages", "Index", "Page")%></li>
+                    <li><%= Html.RouteLink("Pages", "Admin", new {controller="Pages", action="Index" })%></li>
                     <li><%= Html.ActionLink("Settings", "Index", "Settings")%></li>
                 </ul>
             

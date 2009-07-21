@@ -24,10 +24,10 @@ image{border:0;}
 
 #submenucontainerbelow, #submenucontainerseperate  {/*submenu_bg*/}
 #submenucontainerseperate {/*submenu_seperate*/}      
-  ul.submenu          {/*submenu*/}
-    ul.submenu li               {/*submenu_li*/}
-      ul.submenu li a           { /*submenu_li_a*/}
+  ul.submenu          {margin:0; padding:0; /*submenu*/}
+    ul.submenu li               {list-style-type:none; /*submenu_li*/}
+      ul.submenu li a           {display:block;padding:5px; text-decoration:none; /*submenu_li_a*/}
       ul.submenu li a:hover     { /*submenu_li_a_hover*/}
       ul.submenu li a.selected  { /*submenu_li_a_selected*/}  
           
-#content {margin-top: 40px; /*content*/} 
+#content {margin-top: 40px; margin-left:20px; /*content*/} 

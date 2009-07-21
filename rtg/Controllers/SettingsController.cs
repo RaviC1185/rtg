@@ -91,8 +91,10 @@ namespace rtg.Controllers
       //now put arrage settings into appropiate tags
 
       //#menucontainer
-      if (settings["menu_position"] == "header" && settings["submenu_position"] != "below_header") 
+      if (settings["menu_position"] == "header") 
         menucontainer = string.Format("position: absolute; top: {0}px;", settings["menu_position_topmargin"]);
+      else if (settings["menu_orientation"] == "vertical" && settings["menu_position"] == "content")
+        menucontainer = "float:left;";
 
       //#menu
       if (settings["menu_orientation"] == "horizontal")
@@ -126,7 +128,7 @@ namespace rtg.Controllers
       
       
       //#menu ul li:hover ul
-      if (settings["submenu_position"] == "dropdown" || settings["submenu_position"] == "leftcolumn")
+      if (settings["submenu_position"] == "dropdown" || (settings["submenu_position"] == "leftcolumn" && settings["menu_orientation"] == "vertical"))
         menu_ul_li_hover_ul = "display:block;";
 
       //.submenu
@@ -163,11 +165,9 @@ namespace rtg.Controllers
         submenu_seperate = "float:left;";
       
       //content
-      if (settings["menu_orientation"] == "vertical" && settings["submenu_position"] == "below_header")
-        content = "float:left; width:850px;";
-      else if (settings["submenu_position"] == "leftcolumn")
-        content = "float:left;";
-
+      if ((settings["menu_orientation"] == "vertical" && settings["menu_position"] == "content") ||
+        (settings["submenu_position"] == "leftcolumn"))
+        content = "float:left; width:830px;";
 
       //grab the css template and write over placeholders
 
@@ -298,22 +298,22 @@ namespace rtg.Controllers
             break;
           case 9:
             menu_orientation = "Menu Horizontal";
-            menu_position = "In Header";
-            menu_position_topmargin = 20;
+            menu_position = "In Content";
+            menu_position_topmargin = 0;
             menu_extend = "Full width/depth";
             submenu_postion = "Dropdown/out";
             break;
           case 10:
             menu_orientation = "Menu Horizontal";
-            menu_position = "In Header";
-            menu_position_topmargin = 20;
+            menu_position = "In Content";
+            menu_position_topmargin = 0;
             menu_extend = "Full width/depth";
             submenu_postion = "Below menu";
             break;
           case 11:
             menu_orientation = "Menu Horizontal";
-            menu_position = "In Header";
-            menu_position_topmargin = 20;
+            menu_position = "In Content";
+            menu_position_topmargin = 0;
             menu_extend = "Amount needed";
             submenu_postion = "Left column";
             break;

@@ -1,4 +1,7 @@
-﻿var nodeCreate = 0; 
+﻿var nodeCreate = 0;
+var uploadFolder = '/rtg/rtg/upload/';
+var adminPagesPath = '/Admin/Pages'; 
+var adminSettingsPath = '/Admin/Settings'; 
 
 $(document).ready(function(){
 /************************************************************************************************************************************************************
@@ -22,7 +25,7 @@ $('.SubmenuBelow > ul > li').hover(
   });
   
   $('#FolderBrowser').fileTree({
-      root: '/rtg/rtg/upload/',
+      root: uploadFolder,
       script: '/Plugins/jqueryFileTree/connectors/jqueryFileTree.aspx'
     }, function(file) { 
         filePreview(file);
@@ -72,7 +75,6 @@ $('.SubmenuBelow > ul > li').hover(
     else
       $.tree_reference("jstree_1").create({ attributes: { id : "newnode", rel:"invisible"}}, -1);
     return false;
-    //$.post("/Page/AddPage");
   });
   
   $(".DeletePage").click(function(){
@@ -80,7 +82,7 @@ $('.SubmenuBelow > ul > li').hover(
     {
       var id = $.tree_reference('jstree_1').selected.attr("id");
       $.tree_focused().remove();
-      $.post("/Page/Delete/"+id);
+      $.post(adminPagesPath+'/Delete/'+id);
     }
   });
   
@@ -98,7 +100,7 @@ $('.SubmenuBelow > ul > li').hover(
     $('.StyleSelected').toggleClass('StyleSelected');
     $(this).toggleClass('StyleSelected');
     var styleid = $(this).attr('id');
-    $.post('/Settings/SelectStyle/'+styleid, function(data){
+    $.post(adminSettingsPath+'/SelectStyle/'+styleid, function(data){
       $('#AdvancedTab').html(data);
       init();
     });
@@ -190,7 +192,7 @@ function init()
   $(".AddGalleryCategory").unbind('click');
   $(".AddGalleryCategory").click(function(){
     var nullcategory = $("#Category0");  
-    $.get("/page/AddGalleryCategory", function(data){
+    $.get(adminPagesPath+'/AddGalleryCategory', function(data){
       nullcategory.before(data);
       init();
     });
@@ -203,7 +205,7 @@ function init()
     $(this).prev().remove();
     $(this).next().remove();
     $(this).remove();
-    $.post("/page/SaveGalleryCategory", {CategoryTitle: catname}, function(catID){
+    $.post(adminPagesPath+'/SaveGalleryCategory', {CategoryTitle: catname}, function(catID){
       category.attr("id", "Category"+catID);
       category.find("input[name=GalleryCategoryID]").attr("value", catID);
       category.find(".dropzone").show();
@@ -221,7 +223,7 @@ function init()
       $("#Gallery0").remove();
     }else{
       var me = $(this)
-      $.get("/page/AddGallery", function(data){
+      $.get(adminPagesPath+'/AddGallery', function(data){
         $("#Category0").prepend(data);
         init();
         $("#Gallery0").find(".sortable").sortable('disable');
@@ -235,7 +237,7 @@ function init()
     var gallery = $(this).parents("div.Gallery");
     var form = gallery.find("form").serialize();
     form = form+"&pageid="+pageid;
-    $.post("/page/SaveGallery", form, function(data){
+    $.post(adminPagesPath+'/SaveGallery', form, function(data){
       gallery.find("input[name=GalleryID]").attr("value", data);
       gallery.attr("id", "Gallery"+data);
       init();
@@ -314,7 +316,7 @@ function init()
   $(".DeleteGallery").click(function(){
     var gallery = $(this).parents("div.Gallery");
     var galleryID = gallery.find("input[name=GalleryID]").attr("value");
-    $.post("/page/DeleteGallery/"+galleryID);
+    $.post(adminPagesPath+'/DeleteGallery/'+galleryID);
     gallery.remove();
     return false;
   });
@@ -323,7 +325,7 @@ function init()
   $(".SaveGallery").click(function(){
     var gallery = $(this).parents("div.Gallery");
     var form = gallery.find("form").serialize();
-    $.post("/page/SaveGallery", form);
+    $.post(adminPagesPath+'/SaveGallery', form);
     var title = gallery.find("div.GalleryTitle").find("span");
     title.html(title.next().attr("value"));
     title.next().remove();
@@ -358,7 +360,7 @@ function init()
   $(".DeleteGalleryImage").click(function(){
     var id =  $(this).attr("href");
     $(this).parents(".GalleryImage").remove();
-    $.post("/page/DeleteGalleryImage/"+id);
+    $.post(adminPagesPath+'/DeleteGalleryImage/'+id);
     return false;
   });
   
@@ -457,7 +459,7 @@ function init()
 
 function filePreview(file)
 {
-  $.post("/Page/GetFilePreview", {file: file}, function(data){
+  $.post(adminPagesPath+'/Admin/Pages/GetFilePreview', {file: file}, function(data){
     $("#ImageGallery").html(data);
   });
 }
@@ -467,7 +469,7 @@ function SaveGalleryCollection(gallery)
   gallery.find(".dropzone").remove();
   var imageids = gallery.sortable("toArray");
   var galleryID = gallery.parents("div.Gallery").find("#GalleryID").attr("value");
-  $.post("/page/SaveGalleryCollection", {galleryID: galleryID, images: imageids});
+  $.post(adminPagesPath+'/SaveGalleryCollection', {galleryID: galleryID, images: imageids});
 }
 
 function SaveCategoryCollection(category)
@@ -475,7 +477,7 @@ function SaveCategoryCollection(category)
   category.find(".dropzone").remove();
   var galleryIDs = category.sortable("toArray");
   var categoryID = category.find("#GalleryCategoryID").attr("value");
-  $.post("/page/SaveCategoryCollection", {categoryID: categoryID, galleries: galleryIDs});
+  $.post(adminPagesPath+'/SaveCategoryCollection', {categoryID: categoryID, galleries: galleryIDs});
 }
 
 function dropImage(pageId, $item)
@@ -496,7 +498,7 @@ function dropGalleryImage(galleryID, $item)
   //alert("drop Image");
   var src = $item.children("a").attr("rel");
   //alert("src="+src);
-  $.post("/Page/AddImageToGallery", {galleryID: galleryID, imageSrc: src}, function(data){
+  $.post(adminPagesPath+'/AddImageToGallery', {galleryID: galleryID, imageSrc: src}, function(data){
     $("#Gallery"+galleryID).find(".dropzone").remove();
     $("#Gallery"+galleryID).find(".thumbs").children("div").before(data);
     init();
@@ -507,7 +509,7 @@ function dropGalleryFolder(galleryID, $item)
 {
   //alert("DropFolder");
   var folder = $item.children("a").attr("rel");
-  $.post("/Page/AddFolderToGallery", {galleryID: galleryID, folder: folder}, function(data){
+  $.post(adminPagesPath+'/AddFolderToGallery', {galleryID: galleryID, folder: folder}, function(data){
     $("#Gallery"+galleryID).find(".dropzone").remove();
     $("#Gallery"+galleryID).find(".thumbs").html(data);
     $("#Gallery"+galleryID).find(".thumbs").prepend('<li style="list-style-type: none;"/>');
@@ -528,7 +530,7 @@ function jstree_rename(node)
   if(nodeCreate==1)
   {
     //Create
-    $.post("/Page/AddPage", {title: title, parentid: parentid}, function(data){
+    $.post(adminPagesPath+'/AddPage', {title: title, parentid: parentid}, function(data){
       //replace node id
       $(node).attr("id", data);
     });
@@ -544,7 +546,7 @@ function jstree_onchange(node)
 {
   if(node.id)
   {
-    $.get("/Page/GetPageSettings/"+node.id, function(data){
+    $.get(adminPagesPath+'/GetPageSettings/'+node.id, function(data){
       $("#PageSettings").html(data);
       init();
     });  
@@ -568,7 +570,7 @@ function jstree_ddclick(node)
 
 function tabContent(pageId, tabId)
 {
-  $.get("/Page/GetPageEditorPanel/"+pageId, function(data){
+  $.get(adminPagesPath+'/GetPageEditorPanel/'+pageId, function(data){
       $("#"+tabId).html(data);
       init();
       var ids = new Array();
@@ -585,7 +587,7 @@ function jstree_savetree()
   //alert("move");
   var jtree = $.tree_reference('jstree_1').getJSON();
   //alert("jtree={"+jtree+"}");
-  $.post("/Page/SavePageTree", {pagetree: JSON.stringify(jtree)});
+  $.post(adminPagesPath+'/SavePageTree', {pagetree: JSON.stringify(jtree)});
   //alert("sent");
 }
 

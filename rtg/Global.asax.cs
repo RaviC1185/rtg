@@ -15,12 +15,35 @@ namespace rtg
     public static void RegisterRoutes(RouteCollection routes)
     {
       routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+      routes.IgnoreRoute("Settings/{*pathInfo}");
+
+      routes.MapRoute(
+      "Pages",
+      "Pages/{id}",
+      new { controller = "Pages", action = "Index", id = "" }
+      );
+
+      routes.MapRoute(
+      "AdminPages",
+      "Admin/Pages/{action}/{id}",
+      new { controller = "Admin", action = "Index", id = "" }
+      );
+
+      routes.MapRoute(
+      "Admin",
+      "Admin/{controller}/{action}/{id}",
+      new { controller = "Admin", action = "Index", id = "" }
+      );
+
+
 
       routes.MapRoute(
           "Default",                                              // Route name
           "{controller}/{action}/{id}",                           // URL with parameters
           new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
       );
+
+
 
     }
 

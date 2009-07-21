@@ -1,7 +1,7 @@
 <%@ Import Namespace="rtg.Models" %>
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<Setting>>" %>
 
-<form action="<%= Url.RouteUrl(new {action = "Update" })%>" method="post">
+<form action="<%= Url.RouteUrl("Admin",new {action = "Update", controller="Settings" })%>" method="post">
 <% 
   foreach (string s in Model.Select(stg => stg.Category).Distinct())
   { %>

@@ -13,17 +13,17 @@
 </head>
 <body>
   <div id="page">    
-    <div id="header"><asp:ContentPlaceHolder ID="FrontEndHeader" runat="server" /></div>
-    <div id="menucontainer">
-      <% Html.RenderPartial("Menu"); %>
-      <div id="submenucontainerbelow">
-      </div>
+    <% rtgDataContext db = new rtgDataContext();
+       Setting headerImg = db.Settings.FirstOrDefault(s => s.SettingKey == "home_page_header");   
+    %>
+    <div id="header">
+      <img src="<%= headerImg.Value %>" />
     </div>
-    <div id="submenucontainerseperate">
-    </div>
+    
+    <% Html.RenderPartial("Menu"); %>
+    
     <div id="content">
         <asp:ContentPlaceHolder ID="FrontEndMainContent" runat="server">
-        
         </asp:ContentPlaceHolder>
     </div>
   </div>
