@@ -1,9 +1,9 @@
 ﻿body{/*body*/}
 a {border:0;}
-image{border:0;}
+img{border:0;}
 
-#page{width:1000px; margin: 0 auto; position:relative; /*border*/}
-#header{width:1000px;}
+#page{/*site_width*/ margin: 0 auto; position:relative; /*border*/}
+#header{overflow:hidden;}
 
 #menucontainer{/*menucontainer*/}
 
@@ -31,4 +31,15 @@ image{border:0;}
       ul.submenu li a:hover     { /*submenu_li_a_hover*/}
       ul.submenu li a.selected  { /*submenu_li_a_selected*/}  
           
-#content {margin-top: 40px; margin-left:20px; /*content*/} 
+#content {padding-top: 40px; padding-left:20px; /*content*/} 
+#content a{ text-decoration:none; /*content_a*/}
+#content a:hover{/*content_a_hover*/}
+
+
+a.galleryPreview {overflow:hidden; margin: 10px 0; display:block; color:Black; text-decoration:none; padding: 5px;}
+a.galleryPreview:hover {background-color: #cccccc;}
+.galleryPreview img {float:left; margin-right:20px;}
+.galleryPreview div {float:left;}
+
+#footer {clear:both; position:relative; overflow:hidden;}
+#footerText {padding:10px; /*footerText*/}

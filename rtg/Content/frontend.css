@@ -1,13 +1,13 @@
 body{background-color:#ffffff;}
 a {border:0;}
-image{border:0;}
+img{border:0;}
 
-#page{width:1000px; margin: 0 auto; position:relative; /*border*/}
-#header{width:1000px;}
+#page{width:600px; margin: 0 auto; position:relative; }
+#header{overflow:hidden;}
 
 #menucontainer{position: absolute; top: 0px;}
 
-#menu                               {width: 1000px; background-color: #e83ae8;}
+#menu                               {width:600px; background-color: #e892e8;}
   #menu ul                          {margin:0; padding:0;}
     #menu ul li                     {position:relative; float:left;list-style-type:none;}
       #menu ul li a                 {display:block; padding:5px; text-decoration:none; color: #262026; background-color: #fefefe;}
@@ -19,7 +19,7 @@ image{border:0;}
 
       #menu ul li ul.submenu                    {margin:0; padding:0;  background-color: #3e6ed6;width: 150px;}
         #menu ul li ul.submenu li               {list-style-type:none; float:none;}
-          #menu ul li ul.submenu li a           { color: #240d24; background-color: #8c65d4;}
+          #menu ul li ul.submenu li a           { color: #591d59; background-color: #8c65d4;}
           #menu ul li ul.submenu li a:hover     { color: #331d33; background-color: #c737c7;}
           #menu ul li ul.submenu li a.selected  { color: #261a26; background-color: #462066;}
 
@@ -27,8 +27,16 @@ image{border:0;}
 #submenucontainerseperate {}      
   ul.submenu          {margin:0; padding:0; background-color: #3e6ed6;width: 150px;}
     ul.submenu li               {list-style-type:none; float:none;}
-      ul.submenu li a           {display:block;padding:5px; text-decoration:none; color: #240d24; background-color: #8c65d4;}
+      ul.submenu li a           {display:block;padding:5px; text-decoration:none; color: #591d59; background-color: #8c65d4;}
       ul.submenu li a:hover     { color: #331d33; background-color: #c737c7;}
       ul.submenu li a.selected  { color: #261a26; background-color: #462066;}  
           
-#content {margin-top: 40px; margin-left:20px; } 
+#content {padding-top: 40px; padding-left:20px; background-color:#ffffff;} 
+
+a.galleryPreview {overflow:hidden; margin: 10px 0; display:block; color:Black; text-decoration:none; padding: 5px;}
+a.galleryPreview:hover {background-color: #cccccc;}
+.galleryPreview img {float:left; margin-right:20px;}
+.galleryPreview div {float:left;}
+
+#footer {clear:both; position:relative; overflow:hidden;}
+#footerText {padding:10px; }

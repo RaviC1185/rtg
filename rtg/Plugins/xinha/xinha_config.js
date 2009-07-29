@@ -88,7 +88,7 @@ xinha_init = xinha_init ? xinha_init : function()
    ************************************************************************/
 
   xinha_editors   = Xinha.makeEditors(xinha_editors, xinha_config, xinha_plugins);
-
+  
   /** STEP 5 ***************************************************************
    * If you want to change the configuration variables of any of the
    * editors,  this is the place to do that, for example you might want to

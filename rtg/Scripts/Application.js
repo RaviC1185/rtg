@@ -1,21 +1,13 @@
 ﻿var nodeCreate = 0;
 var uploadFolder = '/rtg/rtg/upload/';
+//var uploadFolder = '/Websites/rtg.genesisone.com.au/http/upload/';
 var adminPagesPath = '/Admin/Pages'; 
 var adminSettingsPath = '/Admin/Settings'; 
+var fileManagerPath = '/Admin/FileManager'; 
+
 
 $(document).ready(function(){
-/************************************************************************************************************************************************************
-************ Menu
-************************************************************************************************************************************************************/
-
-$('.SubmenuBelow > ul > li').hover(
-  function(){
-   alert('stuff');
-   $('submenucontainerbelow').html($(this).find('#submenu'));
-  },
-  function(){}
-);
-
+  FileManager();
 /************************************************************************************************************************************************************
 ************ Pages
 ************************************************************************************************************************************************************/
@@ -82,7 +74,7 @@ $('.SubmenuBelow > ul > li').hover(
     {
       var id = $.tree_reference('jstree_1').selected.attr("id");
       $.tree_focused().remove();
-      $.post(adminPagesPath+'/Delete/'+id);
+      $.post(adminPagesPath+'/Delete/'+id, {});
     }
   });
   
@@ -100,7 +92,7 @@ $('.SubmenuBelow > ul > li').hover(
     $('.StyleSelected').toggleClass('StyleSelected');
     $(this).toggleClass('StyleSelected');
     var styleid = $(this).attr('id');
-    $.post(adminSettingsPath+'/SelectStyle/'+styleid, function(data){
+    $.post(adminSettingsPath+'/SelectStyle/'+styleid, {}, function(data){
       $('#AdvancedTab').html(data);
       init();
     });
@@ -111,6 +103,7 @@ $('.SubmenuBelow > ul > li').hover(
 
 function init()
 {
+  FileManagerInit();
 /************************************************************************************************************************************************************
 ************ Pages
 ************************************************************************************************************************************************************/
@@ -316,7 +309,7 @@ function init()
   $(".DeleteGallery").click(function(){
     var gallery = $(this).parents("div.Gallery");
     var galleryID = gallery.find("input[name=GalleryID]").attr("value");
-    $.post(adminPagesPath+'/DeleteGallery/'+galleryID);
+    $.post(adminPagesPath+'/DeleteGallery/'+galleryID, {});
     gallery.remove();
     return false;
   });
@@ -360,7 +353,7 @@ function init()
   $(".DeleteGalleryImage").click(function(){
     var id =  $(this).attr("href");
     $(this).parents(".GalleryImage").remove();
-    $.post(adminPagesPath+'/DeleteGalleryImage/'+id);
+    $.post(adminPagesPath+'/DeleteGalleryImage/'+id, {});
     return false;
   });
   
@@ -613,4 +606,85 @@ function AutoSave(item)
     var action = form.attr('action');
     var formstr = form.serialize();
     $.post(action, formstr);
+}
+
+/************************************************************************************************************************************************************
+************ FolderManager
+************************************************************************************************************************************************************/
+
+//Runs once when document is ready.
+function FileManager()
+{
+  $("#FileUpload").uploadify({
+		uploader        : '/Plugins/uploadify/uploadify.swf',
+		script          : '/Admin/FileManager/Upload',
+		cancelImg       : '/Plugins/uploadify/cancel.png',
+		folder          : '/upload',
+		queueID         : 'fileQueue',
+		auto            : true,
+		multi           : true,
+		displayData     : 'speed',
+		simUploadLimit  : 2,
+		onComplete      : function(ev, qid, fileObj, rsp, data){RefreshFileManager(fileObj)}
+	});
+	
+	$("#FileManager").tree({
+	  data  : {
+        type  : "json", // or "xml_nested" or "json"
+        url   : "/Admin/FileManager/UploadTree"
+       },
+    ui      : {
+      theme_name  : "classic",
+      context : {}},
+    rules   : {
+      multiple    : false,    // FALSE | CTRL | ON - multiple selection off/ with or without holding Ctrl
+      metadata    : false,    // FALSE or STRING - attribute name (use metadata plugin)
+      type_attr   : "rel",    // STRING attribute name (where is the type stored if no metadata)
+      multitree   : false,    // BOOL - is drag n drop between trees allowed
+      createat    : "bottom", // STRING (top or bottom) new nodes get inserted at top or bottom
+      use_inline  : false,    // CHECK FOR INLINE RULES - REQUIRES METADATA
+      clickable   : "all",    // which node types can the user select | default - all
+      renameable  : "all",    // which node types can the user select | default - all
+      deletable   : "all",    // which node types can the user delete | default - all
+      creatable   : "all",    // which node types can the user create in | default - all
+      draggable   : "all",   // which node types can the user move | default - none | "all"
+      dragrules   : "all",    // what move operations between nodes are allowed | default - none | "all"
+      drag_copy   : false,    // FALSE | CTRL | ON - drag to copy off/ with or without holding Ctrl
+      droppable   : [],
+      drag_button : "left"},
+    callback    : {           
+      onchange    : function(NODE,TREE_OBJ) {},//jstree_onchange(NODE)},
+      ondblclk    : function(NODE, TREE_OBJ) {},//jstree_ddclick(NODE)},
+      onselect    : function(NODE,LANG,TREE_OBJ,RB) {},                  // node selected
+      onrename    : function(NODE,LANG,TREE_OBJ,RB) {},// jstree_rename(NODE)},              // node renamed ISNEW - TRUE|FALSE, current language
+      onmove      : function(node,ref_node,type,tree_ref,rb) { FileManagerMove(node,ref_node,type,tree_ref, rb);}, // move completed (TYPE is BELOW|ABOVE|INSIDE)
+      oncreate    : function(NODE,REF_NODE,TYPE,TREE_OBJ,RB) {}, // node created, parent node (TYPE is createat)
+      ondelete    : function(NODE, TREE_OBJ,RB) { },                  // node deleted
+      ondrop      : function(NODE,REF_NODE,TYPE,TREE_OBJ) {}
+    },
+    lang : {new_node: "New Folder"}
+  });
+}
+
+//Runs everytime event refresh is required
+function FileManagerInit(node,ref_node,type)
+{
+}
+
+
+//other functions
+function FileManagerMove(node, ref_node, type, tree_ref, rb)
+{
+  tree_ref.lock(true);
+  $.post("/Admin/FileManager/Move",{item:$(node).attr("fsdata"),folder:$(ref_node).attr("fsdata")}, function(data){
+    if(data != "success"){
+      $.tree_rollback(rb);
+    }
+    tree_ref.lock(false);
+  });
+}
+
+function RefreshFileManager(file)
+{
+  $.tree_reference('FileManager').create({ attributes : { 'class' : file.type.replace('.', ''), 'fsdata': file.filePath }, data: {'title':file.name}},$('#upload_0'));
 }

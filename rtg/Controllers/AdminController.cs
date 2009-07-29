@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Collections;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace rtg.Controllers
 {
@@ -74,6 +75,7 @@ namespace rtg.Controllers
         return View(p.PageTemplate.EditorFile, p);
     }
 
+    [ValidateInput(false)]
     public string AddPage(string title, int? parentid)
     {
       Page lastpage;
@@ -90,8 +92,9 @@ namespace rtg.Controllers
         menuOrder = lastpage.MenuOrder + 1;
 
       Page p = new Page();
-      p.Title = title;
-      p.MenuTitle = title;
+      p.Title = Server.HtmlEncode(title);
+      p.MenuTitle = Server.HtmlEncode(title);
+      p.Permalink = TitleToPermalink(title);
       p.ParentID = parentid;
       p.MenuOrder = menuOrder;
       p.DisplayInMenu = false;
@@ -112,6 +115,15 @@ namespace rtg.Controllers
       db.SubmitChanges();
 
       return p.PageID.ToString();
+    }
+
+    private string TitleToPermalink(string title)
+    {
+      string temp = Regex.Replace(title, @"\W+", "-");
+      temp = Regex.Replace(temp, @"-+", "-");
+      temp = Regex.Replace(temp, @"^-", "");
+      temp = Regex.Replace(temp, @"-$", "");
+      return temp;
     }
 
     public void Delete(int id)

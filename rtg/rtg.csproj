@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FileManagerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\PagesController.cs" />
@@ -75,6 +76,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rtg.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\image_resize\iLogic.cs" />
+    <Compile Include="Plugins\image_resize\Image.aspx.cs">
+      <DependentUpon>Image.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -138,7 +144,6 @@
     <Content Include="Plugins\jquery.ui\images\ui-icons_f9bd01_256x240.png" />
     <Content Include="Plugins\jquery.ui\jquery-ui-1.7.1.custom.css" />
     <Content Include="Plugins\jquery.ui\jquery-ui-1.7.1.custom.min.js" />
-    <Content Include="Plugins\jqueryFileTree\connectors\jqueryFileTree.asp" />
     <Content Include="Plugins\jqueryFileTree\connectors\jqueryFileTree.aspx" />
     <Content Include="Plugins\jqueryFileTree\images\application.png" />
     <Content Include="Plugins\jqueryFileTree\images\code.png" />
@@ -1235,14 +1240,6 @@
     <Content Include="Plugins\xinha\xinha_config.js" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Plugins\jqueryFileTree\connectors\jqueryFileTree.cf" />
-    <None Include="Plugins\jqueryFileTree\connectors\jqueryFileTree.jsp" />
-    <None Include="Plugins\jqueryFileTree\connectors\jqueryFileTree.php" />
-    <None Include="Plugins\jqueryFileTree\connectors\jqueryFileTree.pl" />
-    <None Include="Plugins\jqueryFileTree\connectors\jqueryFileTree.py" />
-    <None Include="Plugins\jqueryFileTree\connectors\jqueryFileTree.rb" />
-    <None Include="Plugins\jqueryFileTree\connectors\jqueryFileTree_huck.lasso" />
-    <None Include="Plugins\jqueryFileTree\connectors\jqueryFileTree_sabourdin.lasso" />
     <None Include="Models\rtg.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>rtg.designer.cs</LastGenOutput>
@@ -1312,6 +1309,9 @@
     <None Include="Models\rtg.dbml.layout">
       <DependentUpon>rtg.dbml</DependentUpon>
     </None>
+    <None Include="Plugins\uploadify\check.php" />
+    <None Include="Plugins\uploadify\uploadify.fla" />
+    <None Include="Plugins\uploadify\uploadify.php" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1319,10 +1319,35 @@
     <Content Include="Content\front.css" />
     <Content Include="Content\frontend.css" />
     <Content Include="Content\template.css" />
+    <Content Include="Plugins\image_resize\Image.aspx" />
+    <Content Include="Plugins\jquery-lightbox-0.5\css\jquery.lightbox-0.5.css" />
+    <Content Include="Plugins\jquery-lightbox-0.5\images\lightbox-blank.gif" />
+    <Content Include="Plugins\jquery-lightbox-0.5\images\lightbox-btn-close.gif" />
+    <Content Include="Plugins\jquery-lightbox-0.5\images\lightbox-btn-next.gif" />
+    <Content Include="Plugins\jquery-lightbox-0.5\images\lightbox-btn-prev.gif" />
+    <Content Include="Plugins\jquery-lightbox-0.5\images\lightbox-ico-loading.gif" />
+    <Content Include="Plugins\jquery-lightbox-0.5\js\jquery.js" />
+    <Content Include="Plugins\jquery-lightbox-0.5\js\jquery.lightbox-0.5.js" />
+    <Content Include="Plugins\jquery-lightbox-0.5\js\jquery.lightbox-0.5.min.js" />
+    <Content Include="Plugins\jquery-lightbox-0.5\js\jquery.lightbox-0.5.pack.js" />
+    <Content Include="Plugins\jqueryFileTree\connectors\fileManager.aspx" />
+    <Content Include="Plugins\uploadify\cancel.png" />
+    <Content Include="Plugins\uploadify\expressInstall.swf" />
+    <Content Include="Plugins\uploadify\jquery.uploadify.js" />
+    <Content Include="Plugins\uploadify\jquery.uploadify.v2.0.0.min.js" />
+    <Content Include="Plugins\uploadify\swfobject.js" />
+    <Content Include="Plugins\uploadify\uploadify.allglyphs.swf" />
+    <Content Include="Plugins\uploadify\uploadify.css" />
+    <Content Include="Plugins\uploadify\uploadify.swf" />
     <Content Include="Scripts\frontend.js" />
+    <Content Include="Views\FileManager\Index.aspx" />
+    <Content Include="Views\Pages\Gallery.aspx" />
     <Content Include="Views\Home\HomePage.aspx" />
     <Content Include="Views\Pages\ContentPage.aspx" />
     <Content Include="Views\Pages\Error.aspx" />
+    <Content Include="Views\Pages\GalleryPage.aspx" />
+    <Content Include="Views\Pages\GalleryPreview.ascx" />
+    <Content Include="Views\Pages\GalleryCategory.ascx" />
     <Content Include="Views\Pages\Index.aspx" />
     <Content Include="Views\Shared\FrontEnd.Master" />
     <Content Include="Views\Shared\Menu.ascx" />

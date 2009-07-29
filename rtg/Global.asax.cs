@@ -15,12 +15,34 @@ namespace rtg
     public static void RegisterRoutes(RouteCollection routes)
     {
       routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-      routes.IgnoreRoute("Settings/{*pathInfo}");
 
+      routes.IgnoreRoute("Settings.mvc/{*pathInfo}");
+
+
+      //routes are doubled up so that I can produce clean urls when using url.route...
+      //but can accept .mvc for iis6 ... yuk I know.
       routes.MapRoute(
       "Pages",
       "Pages/{id}",
       new { controller = "Pages", action = "Index", id = "" }
+      );
+
+      routes.MapRoute(
+      "PagesMVC",
+      "Pages.mvc/{id}",
+      new { controller = "Pages", action = "Index", id = "" }
+      );
+
+      routes.MapRoute(
+      "Gallery",
+      "Gallery/{id}",
+      new { controller = "Pages", action = "Gallery", id = "" }
+      );
+
+      routes.MapRoute(
+      "GalleryMVC",
+      "Gallery.mvc/{id}",
+      new { controller = "Pages", action = "Gallery", id = "" }
       );
 
       routes.MapRoute(
@@ -30,20 +52,34 @@ namespace rtg
       );
 
       routes.MapRoute(
+      "AdminPagesMVC",
+      "Admin.mvc/Pages/{action}/{id}",
+      new { controller = "Admin", action = "Index", id = "" }
+      );
+
+      routes.MapRoute(
       "Admin",
       "Admin/{controller}/{action}/{id}",
       new { controller = "Admin", action = "Index", id = "" }
       );
 
+      routes.MapRoute(
+      "AdminMVC",
+      "Admin.mvc/{controller}/{action}/{id}",
+      new { controller = "Admin", action = "Index", id = "" }
+      );
 
+      routes.MapRoute(
+      "DefaultMVC",                                              // Route name
+      "{controller}.mvc/{action}/{id}",                           // URL with parameters
+      new { controller = "Pages", action = "Index", id = "Home" }  // Parameter defaults
+      );
 
       routes.MapRoute(
           "Default",                                              // Route name
           "{controller}/{action}/{id}",                           // URL with parameters
-          new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
+          new { controller = "Pages", action = "Index", id = "Home" }  // Parameter defaults
       );
-
-
 
     }
 

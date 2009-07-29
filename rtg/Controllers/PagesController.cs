@@ -22,6 +22,16 @@ namespace rtg.Controllers
         return RedirectToAction("Error", new { id = "404" });
     }
 
+    public ActionResult Gallery(int id)
+    {
+      Gallery g = db.Galleries.FirstOrDefault(gl => gl.GalleryID == id);
+
+      if (g != null)
+        return View("Gallery", g);
+      else
+        return RedirectToAction("Error", new { id = "404" });
+    }
+
     public ActionResult Error(int? id)
     {
       return View(id);

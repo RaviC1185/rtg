@@ -21,14 +21,14 @@
   Bottom panel
 </div>
 </div>
-<div style="float:left;width:800px;">
+<div style="float:left;width:600px;">
 		<!-- Tabs -->
 		<div id="tabs">
 			<ul>
 			</ul>
 		</div>
 </div>
-<div id="Gallery" style="float:left;width:400px;margin-left:20px;">
+<div id="Gallery" style="float:left;width:300px;margin-left:20px;">
   <div id="FolderBrowser" style="height:300px; overflow:auto;">
   </div> 
   <div id="ImageGallery">

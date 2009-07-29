@@ -23,7 +23,7 @@
     <%foreach(rtg.Models.Page page in db.Pages.Where(p=>p.ParentID == null).OrderBy(p=>p.MenuOrder))
       { %>
           <% Html.RenderPartial("MenuItem", page); %>
-    <%  if(Request.RawUrl.EndsWith(page.Permalink))
+    <%  if(Request.Path.EndsWith(page.Permalink))
           currentPage = page;
       } %>
   </ul>
@@ -34,7 +34,7 @@
 </div>
 <div id="submenucontainerseperate">
 <% 
-  if ((menuset.SettingKey2 == "horizontal" && submenuset.SettingKey2 == "leftcolumn"))
+  if ((menuset.SettingKey2 == "horizontal" && submenuset.SettingKey2 == "leftcolumn" && !Request.Path.StartsWith("/Gallery/")))
   { %>
     <% Html.RenderPartial("MenuSubmenu", currentPage); %>
  <% } %>

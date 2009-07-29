@@ -31,5 +31,23 @@ namespace rtg.Properties {
                 return ((string)(this["CssFolder"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:/rtg/rtg/upload/")]
+        public string UploadFolder {
+            get {
+                return ((string)(this["UploadFolder"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:/rtg/rtg")]
+        public string Root {
+            get {
+                return ((string)(this["Root"]));
+            }
+        }
     }
 }

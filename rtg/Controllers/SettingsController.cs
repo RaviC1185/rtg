@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using rtg.Models;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace rtg.Controllers
 {
@@ -19,6 +20,7 @@ namespace rtg.Controllers
       return View(settings);
     }
 
+    [ValidateInput(false)]
     public void Update()
     {
       foreach (Setting s in db.Settings)
@@ -88,16 +90,26 @@ namespace rtg.Controllers
 
     private string FileTest(string value)
     {
-      FileInfo fi = new FileInfo(value);
-      if (fi.Exists)
-        return value;
-      else
+      try
+      {
+        FileInfo fi = new FileInfo(rtg.Properties.Settings.Default.Root+value);
+        if (fi.Exists)
+          return value;
+        else
+          return "";
+      }
+      catch {
         return "";
+      }
     }
 
     private string ColourTest(string value)
     {
-      return value;
+      Regex colorPattern = new Regex("^([0-9a-f]{1,2}){3}$");
+      if (colorPattern.IsMatch(value))
+        return value;
+      else
+        return "";
     }
 
     private void GenerateCSS()
@@ -105,6 +117,8 @@ namespace rtg.Controllers
       IDictionary<string, string> settings = GenerateSettingsDictionary();
 
       string body = "";
+      string site_width = "";
+      
       string border = "";
       string menucontainer = "";
       string menu = "";
@@ -126,6 +140,9 @@ namespace rtg.Controllers
       string submenu_seperate = "";
 
       string content = "";
+      string content_a = "";
+      string content_a_hover = "";
+      string footerText = "";
 
       //now put arrage settings into appropiate tags
 
@@ -135,6 +152,9 @@ namespace rtg.Controllers
       {
         body += string.Format("background-image:url({0}); background-repeat:{1};", settings["site_bg_image"], settings["site_bg_repeat"]);
       }
+      
+      //site_width
+      site_width = string.Format("width:{0}px;", settings["site_width"]);
 
       //border eg border: solid 10px #cccccc;
       if(settings["site_border_thickness"].Length>0 && settings["site_border_colour"].Length > 0)
@@ -148,7 +168,7 @@ namespace rtg.Controllers
 
       //#menu
       if (settings["menu_orientation"] == "horizontal")
-        menu = string.Format("width: 1000px; background-color: #{0};", settings["menu_background_extend"]);
+        menu = string.Format("{0} background-color: #{1};", site_width ,settings["menu_background_extend"]);
       else
         menu = string.Format("width: 150px; background-color: #{0};", settings["menu_background_extend"]);
 
@@ -185,14 +205,14 @@ namespace rtg.Controllers
       submenu = string.Format("background-color: #{0};", settings["submenu_background_extend"]);
 
       if ((settings["submenu_position"] == "below_menu" || settings["submenu_position"] == "below_header") && settings["menu_extend"] == "full")
-        submenu += "width: 1000px;";
+        submenu += site_width;
       else if (settings["submenu_position"] == "dropdown" || settings["submenu_position"] == "leftcolumn")
         submenu += "width: 150px;";
       else if( settings["submenu_position"] == "below_header" 
             && settings["menu_extend"] == "full" 
             && settings["menu_orientation"] == "vertical"
             && settings["menu_position"] == "content")
-        submenu += "width: 850px;";
+        submenu += string.Format("width: {0}px;", int.Parse(settings["site_width"]) - 150); //left column is 150 so to make it float correctly I need to make it fit
 
 
       // .submenu li
@@ -210,14 +230,30 @@ namespace rtg.Controllers
       submenu_bg = string.Format("background-color: #{0}", settings["submenu_background_extend"]);
 
       if (settings["menu_orientation"] == "vertical" && settings["submenu_position"] == "below_header")
-        submenu_seperate = "float:left; width:850px;";
+        submenu_seperate = string.Format("float:left; width:{0}px;",int.Parse(settings["site_width"]) - 150);
       else if ( settings["submenu_position"] == "leftcolumn")
         submenu_seperate = "float:left;";
       
-      //content
+      //content      
       if ((settings["menu_orientation"] == "vertical" && settings["menu_position"] == "content") ||
         (settings["submenu_position"] == "leftcolumn"))
-        content = "float:left; width:830px;";
+        content = string.Format("float:left; width:{0}px;", int.Parse(settings["site_width"]) - 150 - 20);
+                                                                                         //     menu   padding
+      content += string.Format("background-color:#{0};", settings["content_bg_colour"]);
+      if (settings["content_bg_image"].Length > 0)
+      {
+        content += string.Format("background-image:url({0}); background-repeat:{1};", settings["content_bg_image"], settings["content_bg_repeat"]);
+      }
+
+      content += string.Format("color:#{0};", settings["content_text_colour"]);
+
+      //content_a
+      content_a = string.Format("color:#{0}", settings["content_a_colour"]);
+      content_a_hover = string.Format("color:#{0}", settings["content_a_hover"]);
+
+      //footer
+      if (settings["home_page_footer"].Length > 0)
+        footerText = "position:absolute;top:0;";
 
       //grab the css template and write over placeholders
 
@@ -225,7 +261,8 @@ namespace rtg.Controllers
       string css = fileContents.ReadToEnd();
       fileContents.Close();
 
-      css = css.Replace("/*body*/", body);
+      css = css.Replace("/*body*/", body); 
+      css = css.Replace("/*site_width*/", site_width); 
       css = css.Replace("/*border*/", border);
 
       css = css.Replace("/*menucontainer*/", menucontainer);
@@ -244,6 +281,9 @@ namespace rtg.Controllers
       css = css.Replace("/*submenu_bg*/", submenu_bg);
       css = css.Replace("/*submenu_seperate*/", submenu_seperate);
       css = css.Replace("/*content*/", content);
+      css = css.Replace("/*content_a*/", content_a);
+      css = css.Replace("/*content_a_hover*/", content_a_hover);
+      css = css.Replace("/*footerText*/", footerText);
 
       System.IO.StreamWriter newCssFile = new System.IO.StreamWriter(rtg.Properties.Settings.Default.CssFolder+"frontend.css");
       newCssFile.Write(css);
@@ -284,7 +324,7 @@ namespace rtg.Controllers
         //clear advanced settings
         foreach(Setting cs in db.Settings.Where(st=>st.Tab == "Advanced"))
         {
-          if (cs.SettingKey != "footer_text" || cs.SettingKey != "style_sheet")
+          if (cs.SettingKey != "footer_text" && cs.SettingKey != "style_sheet" && cs.SettingKey != "site_width")
           {
             cs.Value = "";
             db.SubmitChanges();
@@ -406,7 +446,7 @@ namespace rtg.Controllers
             submenu_postion = "Left column";
             break;
           case 17:
-            menu_orientation = "Menu Horizontal";
+            menu_orientation = "Menu Vertical";
             menu_position = "In Content";
             menu_position_topmargin = 0;
             menu_extend = "Amount needed";
