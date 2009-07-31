@@ -10,6 +10,7 @@ using rtg.Models;
 
 namespace rtg.Controllers
 {
+  [Authorize]
   public class FileManagerController : Controller
   {
     rtgDataContext db = new rtgDataContext();
@@ -22,6 +23,37 @@ namespace rtg.Controllers
         return View();
     }
 
+    [AcceptVerbs(HttpVerbs.Post)]
+    public void Delete(string path)
+    {
+      path = WebPathToWinPath(path);
+      if (System.IO.Directory.Exists(path))
+      {
+        System.IO.Directory.Delete(path, true);
+      }
+      else if (System.IO.File.Exists(path))
+      {
+        System.IO.File.Delete(path);
+      }
+    }
+
+    [AcceptVerbs(HttpVerbs.Post)]
+    public string CreateFolder(string name, string path)
+    {
+      path = WebPathToWinPath(path);
+      if (System.IO.Directory.Exists(path))
+      {
+        string newpath = path + name;
+        int i = 2;
+        while (System.IO.Directory.Exists(newpath))
+          newpath = newpath + i++;
+        System.IO.Directory.CreateDirectory(newpath);
+
+        return WinPathToWebPath( newpath);
+      }
+      return "";
+    }
+
     public string Upload(HttpPostedFileBase FileData)
     {
       FileData.SaveAs(rtg.Properties.Settings.Default.UploadFolder + FileData.FileName);
@@ -29,6 +61,7 @@ namespace rtg.Controllers
       return "Upload OK!";
     }
 
+    [AcceptVerbs(HttpVerbs.Post)]
     public string Move(string item, string folder)
     {
       item = WebPathToWinPath(item);
@@ -44,11 +77,18 @@ namespace rtg.Controllers
 
       if (System.IO.Directory.Exists(folder) && System.IO.Directory.Exists(item))
       {
-        //DirectoryInfo d = new DirectoryInfo(folder);
-        //System.IO.Directory.Move(item, folder);
+        try
+        {
+          DirectoryInfo d = new DirectoryInfo(item);
+          System.IO.Directory.Move(item, folder + "\\" + d.Name);
 
-        //UpdateFolderRefs(item, folder);
-        return "success";      
+          UpdateFolderRefs(item, folder + "\\" + d.Name );
+          
+          return "success";
+        }
+        catch {
+          return "fail!";
+        }
       }
       if (System.IO.Directory.Exists(folder) && System.IO.File.Exists(item))
       {
@@ -68,15 +108,16 @@ namespace rtg.Controllers
       return "fail!";
     }
 
-    /*private void UpdateFolderRefs(string oldRef, string newRef)
+    private void UpdateFolderRefs(string oldPath, string curretPath)
     {
-      DirectoryInfo dir = new DirectoryInfo(newRef);
+      DirectoryInfo dir = new DirectoryInfo(curretPath);
+      
       foreach(DirectoryInfo d in dir.GetDirectories())
-        UpdateFolderRefs();
+        UpdateFolderRefs(oldPath+"\\"+ d.Name, curretPath+"\\"+d.Name);
 
       foreach(FileInfo f in dir.GetFiles())
-        UpdateFileRefs();
-    }*/
+        UpdateFileRefs(oldPath+"\\"+f.Name, curretPath+"\\"+f.Name);
+    }
 
     private void UpdateFileRefs(string currentPath, string newPath)
     {
@@ -87,6 +128,7 @@ namespace rtg.Controllers
       foreach (PageObject po in db.PageObjects)
       {
         po.HtmlContent = po.HtmlContent.Replace(currentPath, newPath);
+        db.SubmitChanges();
       }
 
       foreach (GalleryImage gi in db.GalleryImages.Where(i => i.Src == currentPath))
@@ -161,13 +203,14 @@ namespace rtg.Controllers
     {
       JObject o = new JObject(
             new JProperty("state", dircount == 0? "open" : "closed"),
-            new JProperty("attributes", new JObject(new JProperty("id", d.Name.ToLower() + "_" + dircount++), new JProperty("fsdata", WinPathToWebPath(d.FullName)))),
+            new JProperty("attributes", new JObject(new JProperty("id", d.Name.ToLower() + "_" + dircount), new JProperty("fsdata", WinPathToWebPath(d.FullName)), new JProperty("rel", dircount == 0 ? "root" : "folder"))),
             new JProperty("data", 
               new JObject(
                 new JProperty("title", d.Name)
               )
             )
       );
+      dircount++;
       JArray children = new JArray();
       foreach (DirectoryInfo cDir in d.GetDirectories())
       { 
@@ -188,7 +231,8 @@ namespace rtg.Controllers
               new JObject(
                 new JProperty("id", f.Name.ToLower() + "_" + filecount++),
                 new JProperty("fsdata", WinPathToWebPath(f.FullName)), 
-                new JProperty("class", f.Extension.Replace(".", ""))
+                new JProperty("class", f.Extension.Replace(".", "")),
+                new JProperty("rel", "file")
               )
             ),
             new JProperty("data", f.Name)

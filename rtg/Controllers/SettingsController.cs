@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace rtg.Controllers
 {
+  [Authorize]
   public class SettingsController : Controller
   {
     rtgDataContext db = new rtgDataContext();

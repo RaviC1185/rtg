@@ -80,6 +80,7 @@ namespace rtg.Controllers
       return RedirectToAction("Index", "Home");
     }
 
+    [Authorize]
     public ActionResult Register()
     {
 

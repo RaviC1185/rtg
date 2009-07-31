@@ -17,6 +17,9 @@ namespace rtg
       routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
       routes.IgnoreRoute("Settings.mvc/{*pathInfo}");
+      routes.IgnoreRoute("Settings/{*pathInfo}");
+      routes.IgnoreRoute("FileManager.mvc/{*pathInfo}");
+      routes.IgnoreRoute("FileManager/{*pathInfo}");
 
 
       //routes are doubled up so that I can produce clean urls when using url.route...

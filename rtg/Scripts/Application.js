@@ -5,6 +5,7 @@ var adminPagesPath = '/Admin/Pages';
 var adminSettingsPath = '/Admin/Settings'; 
 var fileManagerPath = '/Admin/FileManager'; 
 
+var xEditors = [];
 
 $(document).ready(function(){
   FileManager();
@@ -120,6 +121,7 @@ function init()
     return false;
   });
 
+  $(".ToggleButton").unbind('click');
   $('.ToggleButton').click(function(){
     $(this).toggleClass('ToggleButtonOpen');
     $(this).parent().find('.GalleryContent').slideToggle();
@@ -166,7 +168,7 @@ function init()
   $(".PageContentSave").click(function(){
     //alert("Save");
     var id = $(this).attr("name");
-    var editor = xinha_editors[id];
+    var editor = xEditors[id];
     var content = editor.getEditorContent();
     //alert(content);
     var action = $(this).parents("form").attr("action");
@@ -191,6 +193,7 @@ function init()
     });
   });
   
+  $(".SaveGalleryCategory").unbind('click');
   $(".SaveGalleryCategory").click(function(){
     var category = $(this).parents(".GalleryCategory");
     var catname = $(this).prev().attr("value");
@@ -205,6 +208,7 @@ function init()
     });
   });
   
+  $(".CancelGalleryCategory").unbind('click');
   $(".CancelGalleryCategory").click(function(){
     $(this).parents(".GalleryCategory").remove();
   });
@@ -350,6 +354,7 @@ function init()
     return false;
   });
   
+  $(".DeleteGalleryImage").unbind('click');
   $(".DeleteGalleryImage").click(function(){
     var id =  $(this).attr("href");
     $(this).parents(".GalleryImage").remove();
@@ -475,7 +480,7 @@ function SaveCategoryCollection(category)
 
 function dropImage(pageId, $item)
 {
-  var editor = xinha_editors["HtmlContent-"+pageId];
+  var editor = xEditors["HtmlContent-"+pageId];
   var src = $item.children("a").attr("rel");
   var fname = $item.children("a").text();
   var arr = src.split('/upload/');
@@ -567,7 +572,8 @@ function tabContent(pageId, tabId)
       $("#"+tabId).html(data);
       init();
       var ids = new Array();
-      $("#"+tabId).find(".xinha-editor").each(function(index){
+      //$("#"+tabId).find(".xinha-editor").each(function(index){
+      $(".xinha-editor").each(function(index){
       //$(".xinha-editor").each(function(index){
         ids[index] = $(this).attr("id");
       });
@@ -584,7 +590,6 @@ function jstree_savetree()
   //alert("sent");
 }
 
-        
 var xinha_plugins = [];
 var xinha_editors = [];
 
@@ -594,6 +599,7 @@ function xinha_init(editor_ids)
   var xinha_config = new Xinha.Config();
   xinha_editors = Xinha.makeEditors(editor_ids, xinha_config, xinha_plugins);
   Xinha.startEditors(xinha_editors);
+  xEditors[editor_ids]=xinha_editors[editor_ids];
 }
 
 /************************************************************************************************************************************************************
@@ -620,12 +626,13 @@ function FileManager()
 		script          : '/Admin/FileManager/Upload',
 		cancelImg       : '/Plugins/uploadify/cancel.png',
 		folder          : '/upload',
+		buttonText      : 'Upload',
 		queueID         : 'fileQueue',
 		auto            : true,
 		multi           : true,
 		displayData     : 'speed',
 		simUploadLimit  : 2,
-		onComplete      : function(ev, qid, fileObj, rsp, data){RefreshFileManager(fileObj)}
+		onComplete      : function(ev, qid, fileObj, rsp, data){FileManagerNewFile(fileObj)}
 	});
 	
 	$("#FileManager").tree({
@@ -643,12 +650,12 @@ function FileManager()
       multitree   : false,    // BOOL - is drag n drop between trees allowed
       createat    : "bottom", // STRING (top or bottom) new nodes get inserted at top or bottom
       use_inline  : false,    // CHECK FOR INLINE RULES - REQUIRES METADATA
-      clickable   : "all",    // which node types can the user select | default - all
-      renameable  : "all",    // which node types can the user select | default - all
-      deletable   : "all",    // which node types can the user delete | default - all
+      clickable   : ["folder", "file"],    // which node types can the user select | default - all
+      renameable  : ["folder", "file"],    // which node types can the user select | default - all
+      deletable   : ["folder", "file"],    // which node types can the user delete | default - all
       creatable   : "all",    // which node types can the user create in | default - all
-      draggable   : "all",   // which node types can the user move | default - none | "all"
-      dragrules   : "all",    // what move operations between nodes are allowed | default - none | "all"
+      draggable   : ["folder", "file"],   // which node types can the user move | default - none | "all"
+      dragrules   : ["folder * folder", "file * folder"],    // what move operations between nodes are allowed | default - none | "all"
       drag_copy   : false,    // FALSE | CTRL | ON - drag to copy off/ with or without holding Ctrl
       droppable   : [],
       drag_button : "left"},
@@ -656,7 +663,7 @@ function FileManager()
       onchange    : function(NODE,TREE_OBJ) {},//jstree_onchange(NODE)},
       ondblclk    : function(NODE, TREE_OBJ) {},//jstree_ddclick(NODE)},
       onselect    : function(NODE,LANG,TREE_OBJ,RB) {},                  // node selected
-      onrename    : function(NODE,LANG,TREE_OBJ,RB) {},// jstree_rename(NODE)},              // node renamed ISNEW - TRUE|FALSE, current language
+      onrename    : function(NODE,LANG,TREE_OBJ,RB) {FileManagerRename(NODE)},// jstree_rename(NODE)},              // node renamed ISNEW - TRUE|FALSE, current language
       onmove      : function(node,ref_node,type,tree_ref,rb) { FileManagerMove(node,ref_node,type,tree_ref, rb);}, // move completed (TYPE is BELOW|ABOVE|INSIDE)
       oncreate    : function(NODE,REF_NODE,TYPE,TREE_OBJ,RB) {}, // node created, parent node (TYPE is createat)
       ondelete    : function(NODE, TREE_OBJ,RB) { },                  // node deleted
@@ -664,6 +671,43 @@ function FileManager()
     },
     lang : {new_node: "New Folder"}
   });
+
+  $('.FileManagerNewFolder').click(function(){
+    if($.tree_reference('FileManager').selected)
+      $.tree_focused().create({ attributes : {'fsdata': '', 'rel':'folder', 'id':'newfolder'}});
+    else
+      $.tree_reference('FileManager').create({ attributes : {'fsdata': '', 'rel':'folder', 'id':'newfolder'}}, '#upload_0');
+    return false;
+  });
+  
+  
+  $(".FileManagerDeleteItem").click(function(){
+    if($.tree_reference('FileManager').selected){
+      $("#ConfirmDeleteDialog").dialog('open');
+    }
+  });
+  
+  $("#ConfirmDeleteDialog").dialog({
+			autoOpen: false,
+			bgiframe: true,
+			resizable: false,
+			height:150,
+			modal: true,
+			overlay: {
+				backgroundColor: '#000',
+				opacity: 0.5
+			},
+			buttons: {
+				'Delete item': function() {
+				  FileManegerDeleteItem();
+				  $(this).dialog('close');
+				},
+				Cancel: function() {
+					$(this).dialog('close');
+				}
+			}
+		});
+
 }
 
 //Runs everytime event refresh is required
@@ -684,7 +728,30 @@ function FileManagerMove(node, ref_node, type, tree_ref, rb)
   });
 }
 
-function RefreshFileManager(file)
+function FileManagerNewFile(file)
 {
-  $.tree_reference('FileManager').create({ attributes : { 'class' : file.type.replace('.', ''), 'fsdata': file.filePath }, data: {'title':file.name}},$('#upload_0'));
+  $.tree_reference('FileManager').create({ attributes : { 'class' : file.type.replace('.', ''), 'fsdata': file.filePath, 'rel':'file'}, data: {'title':file.name}},$('#upload_0'));
+}
+
+function FileManegerDeleteItem()
+{
+  var path = $.tree_reference('FileManager').selected.attr("fsdata");
+  $.tree_focused().remove();
+  $.post('/Admin/FileManager/Delete', {path:path});
+}
+
+
+//function says rename but it is actually used when a new node is created.
+function FileManagerRename(node)
+{
+  var parent = $(node).parents("li:eq(0)").get(0);
+  var parentpath = $(parent).attr('fsdata');
+  var title = $(node).children("a:visible").text();
+ 
+  $.post('/Admin/FileManager/CreateFolder', {name: title, path: parentpath}, function(folderPath){
+    $(node).attr('fsdata', folderPath);
+    $(node).attr('id', folderPath);
+    var arr = folderPath.split('/');
+    $(node).children("a:visible").html(arr[arr.length-1]);
+  });
 }

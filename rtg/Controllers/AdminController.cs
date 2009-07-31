@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 
 namespace rtg.Controllers
 {
+  [Authorize]
   public class AdminController : Controller
   {
     rtgDataContext db = new rtgDataContext();
